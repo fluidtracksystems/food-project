@@ -1,0 +1,66 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { formatDate } from '../lib/recipe-display';
+import type { AuthorBoxVariant } from '../lib/site';
+
+interface Props {
+  variant: AuthorBoxVariant;
+  author: string;
+  updated: Date;
+  credential?: string;
+  aboutHref?: string;
+  photo?: ImageMetadata;
+}
+
+const { variant, author, updated, credential, aboutHref, photo } = Astro.props;
+const showPhoto = variant === 'named-photo' && photo !== undefined;
+---
+
+<aside class="author" aria-label="About this recipe">
+  {showPhoto && photo && <Image class="avatar" src={photo} alt="" width={56} height={56} />}
+  {
+    variant === 'brand' ? (
+      <p>
+        Tested in our kitchen. Updated <time datetime={updated.toISOString()}>{formatDate(updated)}</time>.
+      </p>
+    ) : (
+      <p>
+        <strong>{author}</strong>
+        {credential && <>
+          <br />
+          {credential}
+        </>}
+        {aboutHref && <>
+          <br />
+          <a href={aboutHref}>About the chef</a>
+        </>}
+        <br />
+        Updated <time datetime={updated.toISOString()}>{formatDate(updated)}</time>.
+      </p>
+    )
+  }
+</aside>
+
+<style>
+  .author {
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+    font-size: var(--text-small);
+    margin-top: var(--space-8);
+  }
+
+  .author p {
+    margin: 0;
+  }
+
+  .avatar {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: var(--radius-pill);
+    object-fit: cover;
+    margin-bottom: var(--space-2);
+  }
+</style>

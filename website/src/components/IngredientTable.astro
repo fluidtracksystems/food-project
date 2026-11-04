@@ -1,0 +1,53 @@
+---
+import type { RecipeData } from '../lib/recipe-schema';
+
+interface Props {
+  ingredients: RecipeData['ingredients'];
+}
+
+const { ingredients } = Astro.props;
+---
+
+<table class="ing">
+  <thead>
+    <tr>
+      <th scope="col">Metric</th>
+      <th scope="col">US</th>
+      <th scope="col">Ingredient</th>
+    </tr>
+  </thead>
+  <tbody>
+    {
+      ingredients.map((ingredient) => (
+        <tr>
+          <td>{ingredient.metric}</td>
+          <td>{ingredient.us}</td>
+          <td>
+            {ingredient.item}
+            {ingredient.note ? `, ${ingredient.note}` : ''}
+          </td>
+        </tr>
+      ))
+    }
+  </tbody>
+</table>
+
+<style>
+  .ing {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    text-align: left;
+    padding: var(--space-2) var(--space-2) var(--space-2) 0;
+    border-bottom: 1px solid var(--border-subtle);
+    vertical-align: top;
+  }
+
+  th {
+    font-size: var(--text-caption);
+    color: var(--muted);
+  }
+</style>

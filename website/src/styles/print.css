@@ -1,0 +1,53 @@
+/* Print output for recipes: black on white, no chrome. See docs/design/DESIGN.md section 11. */
+@media print {
+  .no-print,
+  .site-header,
+  .site-footer,
+  .skip-link {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+    font-size: 12pt;
+    line-height: 1.5;
+  }
+
+  a {
+    color: #000;
+    text-decoration: none;
+  }
+
+  .recipe-photo {
+    display: none;
+  }
+
+  .facts,
+  .callout {
+    background: #fff;
+    border: 1px solid #000;
+  }
+
+  .steps li,
+  .facts,
+  table tr {
+    break-inside: avoid;
+  }
+
+  table {
+    border-collapse: collapse;
+  }
+
+  td,
+  th {
+    border-bottom: 1px solid #000;
+    color: #000;
+  }
+
+  .wrap,
+  .recipe {
+    max-width: none;
+    padding: 0;
+  }
+}

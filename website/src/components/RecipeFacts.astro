@@ -1,0 +1,63 @@
+---
+import { formatMinutes, totalMinutes } from '../lib/recipe-display';
+import type { RecipeData } from '../lib/recipe-schema';
+
+interface Props {
+  recipe: Pick<RecipeData, 'prepMinutes' | 'cookMinutes' | 'servings' | 'effort'>;
+}
+
+const { recipe } = Astro.props;
+const hasExtra = Astro.slots.has('extra');
+---
+
+<dl class="facts">
+  <div><dt>Prep</dt><dd>{formatMinutes(recipe.prepMinutes)}</dd></div>
+  <div><dt>Cook</dt><dd>{formatMinutes(recipe.cookMinutes)}</dd></div>
+  <div><dt>Total</dt><dd>{formatMinutes(totalMinutes(recipe))}</dd></div>
+  <div><dt>Serves</dt><dd>{recipe.servings}</dd></div>
+  <div><dt>Effort</dt><dd>{recipe.effort}</dd></div>
+  {
+    hasExtra && (
+      <div class="reserved">
+        <slot name="extra" />
+      </div>
+    )
+  }
+</dl>
+
+<style>
+  .facts {
+    background: var(--surface-alt);
+    border-radius: var(--radius-md);
+    padding: var(--space-4) 1.25rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3) var(--space-4);
+    margin: var(--space-4) 0;
+  }
+
+  @media (min-width: 30rem) {
+    .facts {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+
+  dt {
+    font-size: var(--text-caption);
+    font-weight: 700;
+    color: var(--muted);
+  }
+
+  dd {
+    margin: 0;
+    font-weight: 700;
+  }
+
+  .reserved {
+    grid-column: 1 / -1;
+    font-size: var(--text-caption);
+    color: var(--muted);
+    border-top: 1px dashed var(--border-strong);
+    padding-top: var(--space-2);
+  }
+</style>

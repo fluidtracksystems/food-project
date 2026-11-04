@@ -1,10 +1,31 @@
 ---
+import RecipeCard from '../components/RecipeCard.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getRecipes } from '../lib/recipes';
 import { SITE_NAME, SITE_DESCRIPTION } from '../lib/site';
+
+const latest = (await getRecipes()).slice(0, 6);
 ---
 
 <BaseLayout title={SITE_NAME} description={SITE_DESCRIPTION}>
-  <h1>{SITE_NAME}</h1>
-  <p>{SITE_DESCRIPTION}</p>
-  <p>Recipes and kitchen calculators are coming soon.</p>
+  <section class="hero">
+    <h1>{SITE_NAME}</h1>
+    <p class="lead">{SITE_DESCRIPTION}</p>
+  </section>
+  <section aria-labelledby="latest-h">
+    <h2 id="latest-h">Latest recipes</h2>
+    {
+      latest.length > 0 ? (
+        <ul class="grid">
+          {latest.map((r) => (
+            <li>
+              <RecipeCard id={r.id} recipe={r.data} />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>Recipes are coming soon.</p>
+      )
+    }
+  </section>
 </BaseLayout>

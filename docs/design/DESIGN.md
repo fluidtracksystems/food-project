@@ -1,6 +1,18 @@
 # Design System - food.quantityhost.com
 
-Status: APPROVED by the owner (2026-11-04), including the assumed defaults (dark mode on, no ads at launch). Not yet implemented in `website/`. Tokens: `design-tokens.json`. Interactive preview: `design-preview.html` (open it in a browser). Nothing here has been wired into `website/` yet.
+Status: APPROVED by the owner (2026-11-04), including the assumed defaults (dark mode on, no ads at launch). IMPLEMENTED in `website/` (2026-11-04); see "Implementation decisions" below. Tokens: `design-tokens.json`. Interactive preview: `design-preview.html` (open it in a browser).
+
+Implementation decisions (2026-11-04):
+
+- Fonts use Astro's built-in Fonts API (`fontProviders.fontsource()`), not the `@fontsource-variable/nunito` package. One variable latin woff2 is self-hosted and preloaded.
+- Nunito is OFL-1.1, which closes the licence open item.
+- No manual light/dark switch; the site follows the system setting.
+- `SituationChips` and `EmailSignup` are built but not mounted on public pages until their targets exist (Phases 4 and 5).
+- The author box variant is the `AUTHOR_BOX_VARIANT` constant in `website/src/lib/site.ts` (default "brand only").
+- `effort` is a required recipe field (text label, not in JSON-LD).
+- Two tiny progressive-enhancement scripts (menu, print button), each under 1 KB; content pages otherwise ship no JavaScript.
+- `/styleguide/components/` shows every component; it exists only in dev and drafts builds and is `noindex`.
+- `tokens.css` is guarded by `website/tests/design-tokens.test.ts` (matches `design-tokens.json`, checks contrast).
 
 ## 1. Decisions from the interview
 
@@ -169,7 +181,7 @@ Recipe pages print cleanly: hide the header, footer, email signup and related re
 ## 15. Not verified / open items
 
 - The Kitchn was not viewed; its influence is limited to your description.
-- Nunito: confirm the licence and the package before bundling.
+- Nunito: licence confirmed as OFL-1.1; delivered through Astro's Fonts API (resolved).
 - Preview typography uses Nunito from Google Fonts if the browser is online; offline it falls back to a system font.
 - Situation chip set and the exact hero copy are placeholders.
 - Whether to add a manual light/dark switch (currently follows the system setting).

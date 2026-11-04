@@ -16,6 +16,7 @@ const base = {
   servings: 2,
   prepMinutes: 15,
   cookMinutes: 90,
+  effort: 'One pot',
   ingredients: [
     { item: 'cooked rice', metric: '200 g', us: '1 cup' },
     { item: 'egg', metric: '1', us: '1', note: 'beaten' },
@@ -86,6 +87,12 @@ describe('buildRecipeJsonLd', () => {
     expect('keywords' in ld).toBe(false);
     expect('nutrition' in ld).toBe(false);
     expect('dateModified' in ld).toBe(false);
+  });
+
+  it('does not emit the effort label', () => {
+    const ld = buildRecipeJsonLd(parse(), ctx);
+    expect('effort' in ld).toBe(false);
+    expect(JSON.stringify(ld)).not.toContain('One pot');
   });
 
   it('includes keywords and nutrition when present', () => {

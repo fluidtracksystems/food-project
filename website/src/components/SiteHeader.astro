@@ -1,0 +1,134 @@
+---
+import { NAV_ITEMS } from '../lib/navigation';
+import { SITE_NAME } from '../lib/site';
+
+interface Props {
+  cta?: { label: string; href: string };
+}
+
+const { cta } = Astro.props;
+const path = Astro.url.pathname;
+---
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="/">{SITE_NAME}</a>
+    <nav aria-label="Main">
+      <details class="menu">
+        <summary class="btn btn-secondary">Menu</summary>
+        <ul>
+          {
+            NAV_ITEMS.map((item) => (
+              <li>
+                <a href={item.href} aria-current={path.startsWith(item.href) ? 'page' : undefined}>
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </details>
+    </nav>
+    <!-- Reserved: search slot (deferred) -->
+    {
+      cta && (
+        <a class="btn btn-primary" href={cta.href}>
+          {cta.label}
+        </a>
+      )
+    }
+  </div>
+</header>
+
+<script>
+  // Progressive enhancement: keep the menu open on wide screens, collapsible on phones.
+  const menu = document.querySelector<HTMLDetailsElement>('.site-header .menu');
+  if (menu) {
+    const query = window.matchMedia('(min-width: 48rem)');
+    const sync = () => {
+      menu.open = query.matches;
+    };
+    menu.dataset.enhanced = '';
+    sync();
+    query.addEventListener('change', sync);
+  }
+</script>
+
+<style>
+  .site-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    min-height: 4.25rem;
+  }
+
+  .brand {
+    font-weight: 800;
+    font-size: var(--text-h4);
+    color: var(--text);
+    text-decoration: none;
+    margin-right: auto;
+    min-height: var(--target);
+    display: flex;
+    align-items: center;
+  }
+
+  ul {
+    display: flex;
+    gap: var(--space-1);
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .menu ul {
+    flex-direction: column;
+    padding: var(--space-2) 0;
+  }
+
+  nav a {
+    display: flex;
+    align-items: center;
+    min-height: var(--target);
+    padding: 0 var(--space-3);
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+  }
+
+  nav a:hover {
+    background: var(--surface-alt);
+  }
+
+  nav a[aria-current='page'] {
+    color: var(--accent);
+  }
+
+  summary {
+    list-style: none;
+    cursor: pointer;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  @media (min-width: 48rem) {
+    .menu[data-enhanced] summary {
+      display: none;
+    }
+
+    .menu ul {
+      flex-direction: row;
+      padding: 0;
+    }
+  }
+</style>

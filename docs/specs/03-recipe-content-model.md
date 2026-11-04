@@ -17,6 +17,7 @@ Status: IMPLEMENTED (2026-11-04). The Zod schema is `recipeSchema()` in `website
 | `servings` | number | yes | Drives `recipeYield` |
 | `prepMinutes` | number | yes | Converted to ISO 8601 duration |
 | `cookMinutes` | number | yes | Converted to ISO 8601 duration; `0` is allowed (no-cook recipes) |
+| `effort` | string (1-40 chars) | yes | Badge text such as "One pot"; not in JSON-LD (schema.org has no matching property) |
 | `ingredients` | array of `{ item, metric, us, note? }` | yes | Metric is canonical; US customary shown alongside |
 | `steps` | array of strings | yes | Becomes `HowToStep` list |
 | `tags` | array of strings | no | Used for related recipes |

@@ -1,6 +1,7 @@
 import { z } from 'astro/zod';
 
 export const PILLARS = ['low-energy', 'small-portion', 'leftovers'] as const;
+export type Pillar = (typeof PILLARS)[number];
 
 const ingredientSchema = z.object({
   item: z.string().min(1),
@@ -38,6 +39,8 @@ export function recipeSchema<Img extends z.ZodType>(image: () => Img) {
     prepMinutes: z.number().int().nonnegative(),
     // Zero is valid: no-cook recipes.
     cookMinutes: z.number().int().nonnegative(),
+    // Short plain-text label shown as a badge, e.g. "One pot" or "No stove". Text only, never an icon.
+    effort: z.string().min(1).max(40),
     ingredients: z.array(ingredientSchema).min(1),
     steps: z.array(z.string().min(1)).min(1),
     tags: z.array(z.string().min(1)).optional(),

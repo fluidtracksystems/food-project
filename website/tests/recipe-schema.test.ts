@@ -16,6 +16,7 @@ const valid = {
   servings: 2,
   prepMinutes: 15,
   cookMinutes: 90,
+  effort: 'One pot',
   ingredients: [{ item: 'cooked rice', metric: '200 g', us: '1 cup' }],
   steps: ['Heat the pan.', 'Add the rice.', 'Serve.'],
 };
@@ -57,6 +58,23 @@ describe('recipeSchema', () => {
 
   it('allows zero cook time for no-cook recipes', () => {
     expect(schema.safeParse({ ...valid, cookMinutes: 0 }).success).toBe(true);
+  });
+
+  it('rejects a recipe with no effort label', () => {
+    const { effort: _effort, ...withoutEffort } = valid;
+    expect(schema.safeParse(withoutEffort).success).toBe(false);
+  });
+
+  it('rejects an empty effort label', () => {
+    expect(schema.safeParse({ ...valid, effort: '' }).success).toBe(false);
+  });
+
+  it('rejects an effort label over 40 characters', () => {
+    expect(schema.safeParse({ ...valid, effort: 'x'.repeat(41) }).success).toBe(false);
+  });
+
+  it('accepts an effort label of exactly 40 characters', () => {
+    expect(schema.safeParse({ ...valid, effort: 'x'.repeat(40) }).success).toBe(true);
   });
 
   it('rejects an ingredient missing its metric amount', () => {

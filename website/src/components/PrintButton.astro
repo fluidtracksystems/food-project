@@ -1,0 +1,12 @@
+---
+// Hidden until JS runs: without JS a Print button would do nothing.
+---
+
+<button type="button" class="btn btn-secondary no-print" data-print hidden>Print</button>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-print]').forEach((button) => {
+    button.hidden = false;
+    button.addEventListener('click', () => window.print());
+  });
+</script>
