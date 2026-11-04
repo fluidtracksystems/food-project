@@ -1,0 +1,110 @@
+{
+  "$description": "Design tokens for food.quantityhost.com. DRAFT for owner review. Contrast ratios were computed with the WCAG relative-luminance formula on 2026-11-04.",
+  "meta": {
+    "status": "draft",
+    "direction": "calm and soft",
+    "palette": "warm cream + terracotta",
+    "typography": "friendly rounded sans throughout",
+    "darkMode": true
+  },
+  "color": {
+    "light": {
+      "bg": "#FBF6EE",
+      "surface": "#FFFFFF",
+      "surfaceAlt": "#F3EADB",
+      "text": "#3A2A1F",
+      "textMuted": "#6A5545",
+      "accent": "#A8472A",
+      "accentHover": "#8C3920",
+      "onAccent": "#FFFFFF",
+      "badgeBg": "#F0E2CE",
+      "badgeText": "#5A3C28",
+      "borderSubtle": "#E4D6C2",
+      "borderStrong": "#8C7662",
+      "focus": "#1F4E9A"
+    },
+    "dark": {
+      "bg": "#1D1612",
+      "surface": "#281E18",
+      "surfaceAlt": "#33271F",
+      "text": "#F4EADD",
+      "textMuted": "#CDBCA7",
+      "accent": "#E39A78",
+      "accentHover": "#EDAE92",
+      "onAccent": "#1D1612",
+      "badgeBg": "#3A2C22",
+      "badgeText": "#F0DCC4",
+      "borderSubtle": "#43342A",
+      "borderStrong": "#8A7360",
+      "focus": "#8FB8F0"
+    }
+  },
+  "font": {
+    "family": {
+      "sans": "'Nunito', ui-rounded, 'SF Pro Rounded', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif"
+    },
+    "weight": { "regular": 400, "medium": 600, "bold": 700, "heavy": 800 },
+    "size": {
+      "caption": "0.875rem",
+      "small": "0.95rem",
+      "body": "1.125rem",
+      "h4": "1.25rem",
+      "h3": "1.5rem",
+      "h2": "clamp(1.625rem, 1.4rem + 1vw, 2rem)",
+      "h1": "clamp(2rem, 1.6rem + 1.6vw, 2.75rem)"
+    },
+    "lineHeight": { "tight": 1.2, "snug": 1.35, "body": 1.65 }
+  },
+  "space": {
+    "1": "0.25rem",
+    "2": "0.5rem",
+    "3": "0.75rem",
+    "4": "1rem",
+    "6": "1.5rem",
+    "8": "2rem",
+    "12": "3rem",
+    "16": "4rem"
+  },
+  "radius": { "sm": "6px", "md": "12px", "lg": "20px", "pill": "9999px" },
+  "shadow": {
+    "light": { "card": "0 1px 2px rgba(58, 42, 31, 0.06), 0 2px 8px rgba(58, 42, 31, 0.06)" },
+    "dark": { "card": "none" }
+  },
+  "layout": {
+    "contentMax": "42rem",
+    "pageMax": "72rem",
+    "gutter": "1rem",
+    "gutterWide": "1.5rem"
+  },
+  "breakpoint": { "sm": "30rem", "md": "48rem", "lg": "64rem" },
+  "touch": { "minTarget": "2.75rem" },
+  "focus": { "width": "3px", "offset": "2px" },
+  "motion": {
+    "fast": "120ms",
+    "base": "200ms",
+    "easing": "ease-out",
+    "note": "Respect prefers-reduced-motion: disable all transitions and animations."
+  },
+  "contrastChecks": {
+    "light": {
+      "text on bg": 12.75,
+      "textMuted on bg": 6.51,
+      "accent (link) on bg": 5.42,
+      "onAccent on accent": 5.83,
+      "badgeText on badgeBg": 7.8,
+      "focus on bg": 7.47,
+      "borderStrong on bg": 4.0,
+      "borderSubtle on bg (decorative only)": 1.33
+    },
+    "dark": {
+      "text on bg": 15.02,
+      "textMuted on bg": 9.65,
+      "accent (link) on bg": 7.79,
+      "onAccent on accent": 7.79,
+      "badgeText on badgeBg": 10.07,
+      "focus on bg": 8.75,
+      "borderStrong on bg": 4.0,
+      "borderSubtle on bg (decorative only)": 1.5
+    }
+  }
+}
