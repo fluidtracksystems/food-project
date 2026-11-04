@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import preact from '@astrojs/preact';
 import sitemap from '@astrojs/sitemap';
@@ -8,10 +8,22 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: process.env.SITE_URL ?? 'https://food.quantityhost.com',
   trailingSlash: 'always',
+  // Nunito (OFL-1.1) is self-hosted at build time by Astro's Fonts API.
+  fonts: [
+    {
+      provider: fontProviders.fontsource(),
+      name: 'Nunito',
+      cssVariable: '--font-nunito',
+      weights: ['400 800'],
+      styles: ['normal'],
+      subsets: ['latin'],
+      fallbacks: ['ui-rounded', 'SF Pro Rounded', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+    },
+  ],
   integrations: [
     mdx(),
     preact(),
-    // Fixture pages must never appear in the sitemap.
-    sitemap({ filter: (page) => !page.includes('/fixture-') }),
+    // Fixture and styleguide pages must never appear in the sitemap.
+    sitemap({ filter: (page) => !page.includes('/fixture-') && !page.includes('/styleguide') }),
   ],
 });

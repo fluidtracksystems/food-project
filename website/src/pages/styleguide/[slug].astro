@@ -1,0 +1,156 @@
+---
+// Dev and drafts builds only. Shows every component for visual checks; never in production.
+import AuthorBox from '../../components/AuthorBox.astro';
+import EffortBadge from '../../components/EffortBadge.astro';
+import EmailSignup from '../../components/EmailSignup.astro';
+import IngredientTable from '../../components/IngredientTable.astro';
+import RecipeCard from '../../components/RecipeCard.astro';
+import RecipeFacts from '../../components/RecipeFacts.astro';
+import SituationChips from '../../components/SituationChips.astro';
+import ToolShell from '../../components/ToolShell.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getRecipes, includeDrafts } from '../../lib/recipes';
+
+export function getStaticPaths() {
+  return includeDrafts() ? [{ params: { slug: 'components' } }] : [];
+}
+
+const recipes = await getRecipes();
+const first = recipes[0];
+
+const swatches = [
+  'bg',
+  'surface',
+  'surface-alt',
+  'text',
+  'muted',
+  'accent',
+  'accent-hover',
+  'badge-bg',
+  'border-subtle',
+  'border-strong',
+  'focus',
+];
+const chips = ['Low energy', 'Sick day', 'No-cook', 'Small portions', 'Use up leftovers', 'Under a budget'].map(
+  (label) => ({ label, href: '#' }),
+);
+const sampleIngredients = [
+  { item: 'cooked rice', metric: '300 g', us: '1 1/2 cups' },
+  { item: 'eggs', metric: '2', us: '2', note: 'beaten' },
+  { item: 'neutral oil', metric: '1 tbsp', us: '1 tbsp' },
+];
+const sampleFacts = { prepMinutes: 10, cookMinutes: 15, servings: 2, effort: 'One pan' };
+const updated = new Date('2026-11-04');
+---
+
+<BaseLayout title="Styleguide" description="Component showcase for development." noindex>
+  <h1>Styleguide</h1>
+  <p class="meta">Development only. Every shared component, in the current theme.</p>
+
+  <h2>Colour tokens</h2>
+  <ul class="sw">
+    {
+      swatches.map((name) => (
+        <li>
+          <i style={`background: var(--${name})`} />
+          {name}
+        </li>
+      ))
+    }
+  </ul>
+
+  <h2>Type scale</h2>
+  <p style="font-size: var(--text-h1); font-weight: 800; line-height: 1.2; margin: 0">H1 800</p>
+  <p style="font-size: var(--text-h2); font-weight: 700; margin: 0">H2 700</p>
+  <p style="font-size: var(--text-h3); font-weight: 700; margin: 0">H3 700</p>
+  <p style="margin: 0">Body 400 at 1.125rem with 1.65 line height.</p>
+  <p class="meta">Caption 0.875rem</p>
+
+  <h2>Buttons</h2>
+  <div class="row">
+    <a class="btn btn-primary" href="#buttons">Primary</a>
+    <a class="btn btn-secondary" href="#buttons">Secondary</a>
+    <span class="btn" aria-disabled="true">Disabled</span>
+    <a href="#buttons">Text link</a>
+  </div>
+
+  <h2>Effort badges</h2>
+  <div class="row">
+    <EffortBadge label="One pot" />
+    <EffortBadge label="No stove" />
+    <EffortBadge label="10 minutes prep" />
+  </div>
+
+  <h2>Situation chips</h2>
+  <SituationChips items={chips} />
+
+  {
+    first && (
+      <>
+        <h2>Recipe card</h2>
+        <ul class="grid">
+          <li>
+            <RecipeCard id={first.id} recipe={first.data} />
+          </li>
+        </ul>
+      </>
+    )
+  }
+
+  <h2>Recipe facts</h2>
+  <RecipeFacts recipe={sampleFacts}>
+    <span slot="extra">Reserved: cost per serving (deferred)</span>
+  </RecipeFacts>
+
+  <h2>Ingredient table</h2>
+  <IngredientTable ingredients={sampleIngredients} />
+
+  <h2>Author boxes</h2>
+  <AuthorBox variant="brand" author="Chef name TBD" updated={updated} />
+  <AuthorBox variant="named" author="Chef name TBD" credential="One-line credential" aboutHref="#" updated={updated} />
+  <AuthorBox variant="named-photo" author="Chef name TBD" credential="One-line credential" aboutHref="#" updated={updated} />
+
+  <EmailSignup id="styleguide-signup" />
+
+  <h2>Tool shell</h2>
+  <ToolShell title="Grocery budget calculator (mock)" purpose="Placeholder explainer. Real formulas and their sources will be cited here.">
+    <div>
+      <label for="sg-people">People in your household</label>
+      <input id="sg-people" type="number" min="1" value="2" />
+    </div>
+    <div>
+      <label for="sg-plan">Spending level</label>
+      <input id="sg-plan" type="text" value="Moderate" />
+    </div>
+    <button class="btn btn-primary" type="button">Calculate</button>
+    <Fragment slot="result">Example result: <strong>$0 a week</strong> (placeholder)</Fragment>
+    <Fragment slot="source">Formula source and limits go here.</Fragment>
+  </ToolShell>
+</BaseLayout>
+
+<style>
+  .sw {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    gap: var(--space-3);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .sw li {
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    padding: var(--space-2);
+    font-size: var(--text-caption);
+    background: var(--surface);
+  }
+
+  .sw i {
+    display: block;
+    height: 2.5rem;
+    border-radius: var(--radius-sm);
+    margin-bottom: 0.4rem;
+    border: 1px solid var(--border-subtle);
+  }
+</style>

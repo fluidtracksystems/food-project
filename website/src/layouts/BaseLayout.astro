@@ -1,6 +1,7 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
-import { SITE_NAME } from '../lib/site';
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -12,7 +13,6 @@ interface Props {
 }
 
 const props = Astro.props;
-const year = new Date().getFullYear();
 ---
 
 <!doctype html>
@@ -22,14 +22,10 @@ const year = new Date().getFullYear();
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
-    <header class="site-header">
-      <a class="site-name" href="/">{SITE_NAME}</a>
-    </header>
-    <main id="main">
+    <SiteHeader />
+    <main id="main" class="wrap">
       <slot />
     </main>
-    <footer class="site-footer">
-      <p>&copy; {year} {SITE_NAME}</p>
-    </footer>
+    <SiteFooter />
   </body>
 </html>

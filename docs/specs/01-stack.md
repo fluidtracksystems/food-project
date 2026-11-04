@@ -12,6 +12,7 @@ Status: DRAFT. Versions verified against the npm registry on 2026-11-04. Nothing
 | Interactivity | Preact islands (`@astrojs/preact ^6.1.1`, `preact ^11.1.1`) | Small bundles; calculators only. Peer range allows preact 10 or 11. Alternative: Svelte (not evaluated). |
 | Sitemap | `@astrojs/sitemap ^3.7.4` | Needs `site` in `astro.config.mjs` |
 | Tests | Vitest `^5.1.0` via `getViteConfig()` from `astro/config` | Astro testing guide (documented for Astro 6; confirm for 7) |
+| Fonts | Astro Fonts API with `fontProviders.fontsource()` (Nunito, OFL-1.1) | Self-hosted at build time (first build needs network); no font package dependency |
 | Node | `>=22.23.4` required by Astro 7.4.5 | Local machine: v24.14.0 (satisfies) |
 | Package manager | npm 11.9.0 with workspaces (root + `website`) | Default; no lockfile yet. TBD if you prefer pnpm. |
 | Hosting | Cloudflare Pages free tier | TBD - verify limits and pricing before relying on it |

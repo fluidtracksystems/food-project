@@ -1,0 +1,43 @@
+---
+interface Props {
+  title: string;
+  purpose: string;
+}
+
+const { title, purpose } = Astro.props;
+---
+
+<div class="tool">
+  <h1>{title}</h1>
+  <p>{purpose}</p>
+  <div class="tool-inputs"><slot /></div>
+  <div class="tool-result" role="status" aria-live="polite"><slot name="result" /></div>
+  <div class="tool-source meta"><slot name="source" /></div>
+</div>
+
+<style>
+  .tool {
+    max-width: var(--content-max);
+  }
+
+  .tool-inputs {
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow);
+    padding: var(--space-4) 1.25rem;
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .tool-result {
+    background: var(--surface-alt);
+    border-radius: var(--radius-md);
+    padding: var(--space-4) 1.25rem;
+    margin-top: var(--space-3);
+  }
+
+  .tool-source {
+    margin-top: var(--space-4);
+  }
+</style>

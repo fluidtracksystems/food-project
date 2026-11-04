@@ -9,6 +9,7 @@ datePublished: 2026-11-04
 servings: 2
 prepMinutes: 10
 cookMinutes: 15
+effort: "One pan"
 ingredients:
   - item: "cooked rice"
     metric: "300 g"
