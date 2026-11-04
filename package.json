@@ -1,0 +1,20 @@
+{
+  "name": "food-quantityhost-com",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Chef-led low-effort kitchen: recipes and calculators (workspace root).",
+  "workspaces": ["website"],
+  "engines": {
+    "node": ">=22.23.4"
+  },
+  "scripts": {
+    "dev": "npm run dev -w website",
+    "build": "npm run build -w website",
+    "preview": "npm run preview -w website",
+    "check": "npm run check -w website",
+    "test": "npm run test -w website"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3"
+  }
+}
