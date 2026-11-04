@@ -1,0 +1,57 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import type { RecipeData } from '../lib/recipe-schema';
+
+interface Props {
+  recipe: RecipeData;
+  ogImage: string;
+  noindex?: boolean;
+}
+
+const { recipe, ogImage, noindex = false } = Astro.props;
+const totalMinutes = recipe.prepMinutes + recipe.cookMinutes;
+---
+
+<BaseLayout
+  title={recipe.title}
+  description={recipe.description}
+  image={ogImage}
+  noindex={noindex}
+  type="article"
+>
+  <article class="recipe">
+    <h1>{recipe.title}</h1>
+    <p class="meta">
+      By {recipe.author} &middot; Serves {recipe.servings} &middot; Prep {recipe.prepMinutes} min
+      &middot; Cook {recipe.cookMinutes} min &middot; Total {totalMinutes} min
+    </p>
+    <slot name="photo" />
+    <p>{recipe.description}</p>
+    <h2>Ingredients</h2>
+    <ul>
+      {
+        recipe.ingredients.map((ingredient) => (
+          <li>
+            {ingredient.us} ({ingredient.metric}) {ingredient.item}
+            {ingredient.note ? `, ${ingredient.note}` : ''}
+          </li>
+        ))
+      }
+    </ul>
+    <h2>Method</h2>
+    <ol>
+      {recipe.steps.map((step) => <li>{step}</li>)}
+    </ol>
+    {
+      recipe.leftoverNote && (
+        <>
+          <h2>Storing and reheating</h2>
+          <p>{recipe.leftoverNote}</p>
+        </>
+      )
+    }
+    <div class="recipe-notes">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>

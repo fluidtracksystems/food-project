@@ -1,0 +1,11 @@
+---
+import { toJsonLdString } from '../lib/jsonld';
+
+interface Props {
+  data: unknown;
+}
+
+const { data } = Astro.props;
+---
+
+<script type="application/ld+json" set:html={toJsonLdString(data)} />

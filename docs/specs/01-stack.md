@@ -24,6 +24,7 @@ Status: DRAFT. Versions verified against the npm registry on 2026-11-04. Nothing
 - Astro 7 is current. Its upgrade page (https://docs.astro.build/en/guides/upgrade-to/v7/) lists: Vite 8, a new Markdown renderer (Sätteri; `@astrojs/markdown-remark` no longer installed by default), `compressHTML` default `'jsx'`, stricter Rust-compiler errors on unclosed tags. It did NOT confirm whether the content-collection API changed.
 - Decision: start on Astro 7. First build in the scaffold phase must confirm `src/content.config.ts` works as specified. If it does not, fall back to Astro 6.4.8 with `@astrojs/mdx ^5.0.6` (peer `astro ^6.0.0`).
 - Recorded in `docs/adr/0001-astro-static.md`.
+- **Verified 2026-11-04 (scaffold build):** Astro 7.4.5 installs with no unmet peers (npm resolved `@astrojs/markdown-remark` and `@astrojs/markdown-satteri` itself). `astro check` reports 0 errors; the `glob()` loader, `z` from `astro/zod`, `image()` in the schema function, `render()`, `astro:assets` (`getImage`, `Image`), `trailingSlash: 'always'` and the sitemap `filter` option all work. Vitest 5.1.0 runs through `getViteConfig()`. The Astro 6 fallback was not needed.
 
 ## Peer dependencies to watch at install
 
@@ -40,8 +41,9 @@ Status: DRAFT. Versions verified against the npm registry on 2026-11-04. Nothing
 
 ## Open items
 
-- [ ] Confirm Astro 7 content collections API on first build
+- [x] Confirm Astro 7 content collections API on first build (confirmed)
 - [ ] Choose Preact vs Svelte (Preact proposed; integration docs not reviewed)
 - [ ] Confirm Cloudflare Pages terms
 - [ ] Decide npm vs pnpm
-- [ ] Pin exact versions after first successful install (lockfile)
+- [x] Pin exact versions after first successful install (`package-lock.json` generated; commit it)
+- [ ] Draft images ship in production builds: an unpublished recipe's image asset is still emitted to `dist/_astro/` (unreferenced, hashed filename). Decide in Phase 2 whether to keep drafts out of the content glob in production.

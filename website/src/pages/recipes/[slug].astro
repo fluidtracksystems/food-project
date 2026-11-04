@@ -1,0 +1,37 @@
+---
+import { Image, getImage } from 'astro:assets';
+import { render } from 'astro:content';
+import JsonLd from '../../components/JsonLd.astro';
+import RecipeLayout from '../../layouts/RecipeLayout.astro';
+import { buildRecipeJsonLd } from '../../lib/recipe-jsonld';
+import { getRecipes } from '../../lib/recipes';
+import { absoluteUrl } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const recipes = await getRecipes();
+  return recipes.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+// JSON-LD and Open Graph need an absolute URL to the optimised image.
+const optimised = await getImage({ src: entry.data.image, width: 1200 });
+const imageUrl = absoluteUrl(optimised.src, Astro.site);
+const url = absoluteUrl(Astro.url.pathname, Astro.site);
+const jsonLd = buildRecipeJsonLd(entry.data, { id: entry.id, url, imageUrl });
+---
+
+<RecipeLayout recipe={entry.data} ogImage={imageUrl} noindex={entry.data.draft}>
+  <Fragment slot="photo">
+    <Image
+      src={entry.data.image}
+      alt={entry.data.imageAlt}
+      width={1200}
+      widths={[480, 800, 1200]}
+      sizes="(max-width: 800px) 100vw, 800px"
+    />
+  </Fragment>
+  <Content />
+  <JsonLd data={jsonLd} />
+</RecipeLayout>

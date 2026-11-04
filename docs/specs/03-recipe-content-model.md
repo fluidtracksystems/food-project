@@ -1,6 +1,6 @@
 # 03 - Recipe Content Model
 
-Status: DRAFT. Implemented as a Zod schema in `website/src/content.config.ts` in the scaffold phase.
+Status: IMPLEMENTED (2026-11-04). The Zod schema is `recipeSchema()` in `website/src/lib/recipe-schema.ts` (a function of Astro's `image()` helper so it can be unit-tested), wired up in `website/src/content.config.ts`. JSON-LD is built by `website/src/lib/recipe-jsonld.ts`. Tests are in `website/tests/`.
 
 ## Frontmatter fields (proposed)
 
@@ -16,7 +16,7 @@ Status: DRAFT. Implemented as a Zod schema in `website/src/content.config.ts` in
 | `dateModified` | date | no | |
 | `servings` | number | yes | Drives `recipeYield` |
 | `prepMinutes` | number | yes | Converted to ISO 8601 duration |
-| `cookMinutes` | number | yes | Converted to ISO 8601 duration |
+| `cookMinutes` | number | yes | Converted to ISO 8601 duration; `0` is allowed (no-cook recipes) |
 | `ingredients` | array of `{ item, metric, us, note? }` | yes | Metric is canonical; US customary shown alongside |
 | `steps` | array of strings | yes | Becomes `HowToStep` list |
 | `tags` | array of strings | no | Used for related recipes |
@@ -51,6 +51,6 @@ Status: DRAFT. Implemented as a Zod schema in `website/src/content.config.ts` in
 ## Open items
 
 - [ ] Required vs recommended Recipe properties: verify against Google's Recipe documentation and the Rich Results Test (third-party guides disagree; only `image` is agreed)
-- [ ] Single ingredient list or two lists in JSON-LD
+- [x] Single ingredient list or two lists in JSON-LD: for now `recipeIngredient` uses the US amount plus item and note (for example `"1 cup cooked rice"`). Revisit before launch.
 - [ ] Currency for `estimatedCostPerServing`
 - [ ] Which food-safety authority governs `leftoverNote` (US USDA vs NZ MPI)
