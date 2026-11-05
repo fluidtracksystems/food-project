@@ -1,5 +1,6 @@
 ---
 import RecipeCostCalculator from '../../components/calculators/RecipeCostCalculator';
+import EmailSignup from '../../components/EmailSignup.astro';
 import RecipeCard from '../../components/RecipeCard.astro';
 import ToolShell from '../../components/ToolShell.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -75,6 +76,7 @@ const recipes = (await getRecipes()).slice(0, 3);
       </section>
     )
   }
+  <EmailSignup />
 </BaseLayout>
 
 <style is:global>

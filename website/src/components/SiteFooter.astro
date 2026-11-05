@@ -17,7 +17,7 @@ const year = new Date().getFullYear();
         <ul>
           {SOCIAL_LINKS.map((item) => (
             <li>
-              <a href={item.href} rel="noopener">
+              <a href={item.href} rel="noopener" data-track-outbound={item.destination}>
                 {item.label}
               </a>
             </li>

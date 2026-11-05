@@ -1,3 +1,5 @@
+import { sanitizeSocialLinks } from './social';
+
 export interface NavItem {
   label: string;
   href: string;
@@ -17,5 +19,8 @@ export const FOOTER_LINKS: NavItem[] = [
   { label: 'Disclaimer', href: '/disclaimer/' },
 ];
 
-// Filled when real accounts exist (Pinterest, Instagram). The footer renders none while empty.
-export const SOCIAL_LINKS: NavItem[] = [];
+// Filled when real accounts exist (Pinterest, Instagram), e.g.
+//   { label: 'Pinterest', href: 'https://www.pinterest.com/<account>/' }
+// sanitizeSocialLinks drops anything that is not https on a known social site. The footer renders
+// none while this is empty.
+export const SOCIAL_LINKS = sanitizeSocialLinks([]);

@@ -1,6 +1,7 @@
 ---
 import AuthorBox from '../components/AuthorBox.astro';
 import EffortBadge from '../components/EffortBadge.astro';
+import EmailSignup from '../components/EmailSignup.astro';
 import IngredientTable from '../components/IngredientTable.astro';
 import PrintButton from '../components/PrintButton.astro';
 import RecipeFacts from '../components/RecipeFacts.astro';
@@ -12,10 +13,12 @@ import BaseLayout from './BaseLayout.astro';
 interface Props {
   recipe: RecipeData;
   ogImage: string;
+  /** The recipe's slug, used only to label the recipe_viewed analytics event. */
+  slug: string;
   noindex?: boolean;
 }
 
-const { recipe, ogImage, noindex = false } = Astro.props;
+const { recipe, ogImage, slug, noindex = false } = Astro.props;
 const updated = updatedDate(recipe);
 ---
 
@@ -23,10 +26,11 @@ const updated = updatedDate(recipe);
   title={recipe.title}
   description={recipe.description}
   image={ogImage}
+  imageAlt={recipe.imageAlt}
   noindex={noindex}
   type="article"
 >
-  <article class="recipe">
+  <article class="recipe" data-track-recipe={slug} data-track-pillar={recipe.pillar}>
     <h1>{recipe.title}</h1>
     <p class="meta">
       <EffortBadge label={recipe.effort} /> &middot;
@@ -62,6 +66,7 @@ const updated = updatedDate(recipe);
     <AuthorBox variant={AUTHOR_BOX_VARIANT} author={recipe.author} updated={updated} />
   </article>
   <slot name="after" />
+  <EmailSignup />
 </BaseLayout>
 
 <style is:global>

@@ -1,25 +1,46 @@
 ---
-// Shell only. Provider wiring is Phase 5.
+import { resolveSignupAction } from '../lib/email';
+
 interface Props {
+  /** Overrides the provider endpoint. Normally left unset: PUBLIC_EMAIL_FORM_ACTION is used. */
   action?: string;
   heading?: string;
   id?: string;
 }
 
 const { action, heading = 'Get new recipes by email', id = 'signup' } = Astro.props;
+// Only a valid https endpoint turns the form on. Without one nothing renders in production, so a
+// form can never collect addresses it cannot deliver anywhere. Dev shows a hint instead.
+const endpoint = resolveSignupAction(action ?? import.meta.env.PUBLIC_EMAIL_FORM_ACTION);
+const hint = !endpoint && import.meta.env.DEV;
 ---
 
-<section id={id} class="no-print" aria-labelledby={`${id}-h`}>
-  <h2 id={`${id}-h`}>{heading}</h2>
-  <form class="form" method="post" action={action}>
-    <div>
-      <label for={`${id}-email`}>Email address</label>
-      <input id={`${id}-email`} name="email" type="email" autocomplete="email" required />
-    </div>
-    <button class="btn btn-primary" type="submit">Sign up</button>
-    <p class="meta">One short email when there is a new recipe. Unsubscribe any time.</p>
-  </form>
-</section>
+{
+  endpoint && (
+    <section id={id} class="no-print" aria-labelledby={`${id}-h`}>
+      <h2 id={`${id}-h`}>{heading}</h2>
+      <form class="form" method="post" action={endpoint} data-track-signup={id}>
+        <div>
+          <label for={`${id}-email`}>Email address</label>
+          <input id={`${id}-email`} name="email" type="email" autocomplete="email" required />
+        </div>
+        <button class="btn btn-primary" type="submit">
+          Sign up
+        </button>
+        <p class="meta">
+          One short email when there is a new recipe. We use your address only for that. Unsubscribe any time.
+        </p>
+      </form>
+    </section>
+  )
+}
+{
+  hint && (
+    <p class="meta no-print">
+      Email sign-up is hidden: set PUBLIC_EMAIL_FORM_ACTION to an https form endpoint to show it.
+    </p>
+  )
+}
 
 <style>
   .form {
