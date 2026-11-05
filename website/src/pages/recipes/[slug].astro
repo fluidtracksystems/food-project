@@ -37,6 +37,16 @@ const jsonLd = buildRecipeJsonLd(entry.data, { id: entry.id, url, imageUrl });
       widths={[480, 800, 1200]}
       sizes="(max-width: 800px) 100vw, 800px"
     />
+    {
+      entry.data.imageCredit && (
+        <p class="photo-credit">
+          Photo:{' '}
+          <a href={entry.data.imageCredit.url} rel="noopener noreferrer">
+            {entry.data.imageCredit.photographer} on {entry.data.imageCredit.source}
+          </a>
+        </p>
+      )
+    }
   </Fragment>
   <Content />
   <JsonLd data={jsonLd} />

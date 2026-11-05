@@ -39,7 +39,7 @@ Status: DRAFT. Derived from the PRD (`.claude/PRPs/prds/chef-low-effort-kitchen.
 
 - One canonical URL per page; sitemap generated; `robots.txt` generated from `site`.
 - Static HTML for all content pages; JavaScript only inside calculator islands.
-- Each recipe page has an original photo, valid Recipe schema and a unique title/description.
+- Each recipe page has a photo (stock until the chef shoots, credited), valid Recipe schema and a unique title/description.
 
 ## Open items
 

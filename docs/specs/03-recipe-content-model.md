@@ -9,8 +9,9 @@ Status: IMPLEMENTED (2026-11-04). The Zod schema is `recipeSchema()` in `website
 | `title` | string | yes | Unique per recipe |
 | `description` | string | yes | Meta description and Recipe `description` |
 | `pillar` | `low-energy` \| `small-portion` \| `leftovers` | yes | Drives hub membership |
-| `image` | image asset | yes | Original photo; required for Recipe rich results per third-party guides |
+| `image` | image asset | yes | Photo (stock until the chef shoots; credited); required for Recipe rich results per third-party guides |
 | `imageAlt` | string | yes | Accessibility |
+| `imageCredit` | object | no | Stock photo credit: `photographer`, `source` (Unsplash, Pexels or Pixabay), `url` (https photo page). Shown as a caption. Remove it when a chef photo replaces the stock image |
 | `author` | string | yes | Chef name (named-face decision open) |
 | `datePublished` | date | yes | |
 | `dateModified` | date | no | |

@@ -77,6 +77,41 @@ describe('recipeSchema', () => {
     expect(schema.safeParse({ ...valid, effort: 'x'.repeat(40) }).success).toBe(true);
   });
 
+  describe('imageCredit', () => {
+    const credit = {
+      photographer: 'Jane Doe',
+      source: 'Unsplash',
+      url: 'https://unsplash.com/photos/abc123',
+    };
+
+    it('accepts a valid credit', () => {
+      expect(schema.safeParse({ ...valid, imageCredit: credit }).success).toBe(true);
+    });
+
+    it('accepts no credit', () => {
+      expect(schema.safeParse(valid).success).toBe(true);
+    });
+
+    it('rejects a missing photographer', () => {
+      const { photographer: _p, ...rest } = credit;
+      expect(schema.safeParse({ ...valid, imageCredit: rest }).success).toBe(false);
+    });
+
+    it('rejects a non-URL url', () => {
+      expect(schema.safeParse({ ...valid, imageCredit: { ...credit, url: 'not a url' } }).success).toBe(false);
+    });
+
+    it('rejects an unknown source', () => {
+      expect(schema.safeParse({ ...valid, imageCredit: { ...credit, source: 'Flickr' } }).success).toBe(false);
+    });
+
+    it('rejects javascript: and http: urls', () => {
+      for (const url of ['javascript:alert(1)', 'http://unsplash.com/photos/abc']) {
+        expect(schema.safeParse({ ...valid, imageCredit: { ...credit, url } }).success).toBe(false);
+      }
+    });
+  });
+
   it('rejects an ingredient missing its metric amount', () => {
     const ingredients = [{ item: 'cooked rice', us: '1 cup' }];
     expect(schema.safeParse({ ...valid, ingredients }).success).toBe(false);

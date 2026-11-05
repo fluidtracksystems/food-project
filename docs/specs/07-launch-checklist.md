@@ -24,7 +24,7 @@ What exists today: the Astro site with a design system, recipe template and JSON
 
 ## Content
 
-- [ ] **15 real recipes with original photos.** The three `placeholder-*` recipes and the `fixture-example-recipe` are drafts; delete the placeholders when real ones exist. Until recipes are published, a production build has no hub pages, yet the header and footer navigation link to `/low-energy/`, `/small-portion/` and `/leftovers/`, which would return 404. Publish at least one recipe per pillar, or hide those nav items until then.
+- [ ] **15 recipes published after chef review.** All 15 exist as drafts with credited stock photos (`website/src/assets/recipes/CREDITS.md`); set `draft: false` as the chef approves each. Replacing stock photos with chef photos is optional: swap one file per recipe and remove `imageCredit`. The `fixture-example-recipe` stays a draft. Until recipes are published, a production build has no hub pages, yet the header and footer navigation link to `/low-energy/`, `/small-portion/` and `/leftovers/`, which would return 404. Publish at least one recipe per pillar, or hide those nav items until then.
 - [ ] **Recipe structured data.** Check the Recipe JSON-LD against Google's Recipe documentation and the Rich Results Test (required vs recommended properties are unverified), and settle the single-vs-dual ingredient list in `recipeIngredient` (`03-recipe-content-model.md`).
 - [ ] **Brand assets.** The site has no favicon (browsers request `/favicon.ico` and get a 404), and non-recipe pages have no default Open Graph image.
 

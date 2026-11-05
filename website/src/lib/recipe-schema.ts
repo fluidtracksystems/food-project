@@ -22,6 +22,14 @@ const nutritionSchema = z.object({
   sodiumContent: z.string().optional(),
 });
 
+// Stock photo credit. Omit once the chef's own photo replaces the stock image.
+const imageCreditSchema = z.object({
+  photographer: z.string().min(1),
+  source: z.enum(['Unsplash', 'Pexels', 'Pixabay']),
+  // Photo page on the source site. https only.
+  url: z.string().url().startsWith('https://'),
+});
+
 /**
  * Recipe frontmatter schema, as a function of Astro's `image()` helper so it can
  * be unit-tested without Astro's virtual `astro:content` module.
@@ -34,6 +42,7 @@ export function recipeSchema<Img extends z.ZodType>(image: () => Img) {
     pillar: z.enum(PILLARS),
     image: image(),
     imageAlt: z.string().min(1),
+    imageCredit: imageCreditSchema.optional(),
     author: z.string().min(1),
     datePublished: z.coerce.date(),
     dateModified: z.coerce.date().optional(),
