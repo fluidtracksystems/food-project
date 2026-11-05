@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { LEGAL_UPDATED } from '../lib/site';
+
+const title = 'Disclaimer';
+const description =
+  'Recipes and calculators on this site are general information, not medical or dietary advice. Read how to use them and what to check yourself.';
+---
+
+<BaseLayout title={title} description={description}>
+  <!-- TODO(legal): have this disclaimer reviewed before launch. -->
+  <article class="prose">
+    <h1>{title}</h1>
+    <p class="meta">Last updated {LEGAL_UPDATED}.</p>
+
+    <h2>General information only</h2>
+    <p>
+      The recipes, calculators and other content on this site are general information for home cooks. They are not
+      medical, nutritional or dietary advice, and they are not a substitute for a doctor or a registered dietitian. If
+      you have a medical condition, take medication or have special dietary needs, talk to a doctor or registered
+      dietitian about what is right for you.
+    </p>
+
+    <h2>The calculators</h2>
+    <ul>
+      <li>
+        <strong>Recipe cost:</strong> an estimate from the prices and amounts you enter. It leaves out waste, trimming,
+        tax, energy and labour.
+      </li>
+      <li>
+        <strong>Grocery budget:</strong> the USDA's cost of a nutritious diet at home for the month shown on the page. It
+        is not what a household will actually spend and is not a recommendation to spend a given amount.
+      </li>
+      <li>
+        <strong>Fiber:</strong> a general guideline for healthy people, based on the sources named on the page. It is not
+        a target set for you.
+      </li>
+    </ul>
+
+    <h2>Ingredients and allergens</h2>
+    <p>
+      Read the label on every ingredient and check it for allergens and other things that matter to you. Products
+      change, and a recipe here may contain common allergens.
+    </p>
+
+    <h2>Food safety</h2>
+    <p>
+      Prepare, store and reheat food safely. Storage times and reheating notes on this site are general. Follow current
+      guidance from your national or local food-safety authority.
+    </p>
+
+    <h2>Accuracy</h2>
+    <p>
+      We take care to be accurate, but we cannot promise that everything on this site is complete, current or right for
+      you. Prices, product details and official figures change.
+    </p>
+  </article>
+</BaseLayout>

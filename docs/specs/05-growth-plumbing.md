@@ -13,7 +13,7 @@ Status: PARTLY IMPLEMENTED (slice 3). Providers are still undecided; no vendor c
 
 From the slice 3 security review:
 
-- [ ] The `/privacy/` page exists, names the email provider, and the signup text links to it (US-first audience: say what is collected and why at the point of collection). The footer already links to `/privacy/`, which is a 404 until then.
+- [x] `/privacy/` exists and the signup text links to it. The build now fails when the signup is on while `EMAIL_PROVIDER_NAME` or `CONTACT_EMAIL` in `src/lib/site.ts` is empty or invalid (`src/lib/privacy.ts`), so the notice cannot go live without naming who receives the addresses and a contact. The only way to turn the form on is `PUBLIC_EMAIL_FORM_ACTION`. **Still to do:** set those two values when the provider is chosen, and have the notice reviewed (`TODO(legal)` in `privacy.astro`, including US state privacy law).
 - [ ] The value is checked by hand before each release. The code accepts any `https` host, so a typo or the wrong provider would send subscribers' addresses to a third party. It must be a form endpoint only: no API key or token, in the path or the query string, because it ships to every visitor.
 - [ ] Each email carries the sender's postal address and a working unsubscribe link (CAN-SPAM). This is the provider's template, not the site.
 - [ ] When an analytics vendor is added as a `site:analytics` listener, revisit consent and Global Privacy Control handling; today nothing is sent anywhere.
