@@ -29,6 +29,8 @@ export interface RecipeCostResult {
 }
 
 const DECIMAL = /^[+-]?(\d+\.?\d*|\.\d+)(e[+-]?\d+)?$/i;
+// Digits with at least one comma, optionally a decimal point: "1,5", "1,000", "1,000.50".
+const COMMA_NUMBER = /^[+-]?\d[\d,]*,[\d,]*\d(\.\d*)?$/;
 
 type Parsed = { ok: true; value: number } | { ok: false; error: string };
 
@@ -40,6 +42,13 @@ function parseNumber(raw: string | number, label: string): Parsed {
   if (isBlank(raw)) return { ok: false, error: `Enter the ${label}.` };
   const value = typeof raw === 'number' ? raw : DECIMAL.test(raw.trim()) ? Number(raw.trim()) : Number.NaN;
   if (!Number.isFinite(value)) {
+    // "1,5" and "1,000" are common in other locales and in pasted prices; say what to do instead.
+    if (typeof raw === 'string' && COMMA_NUMBER.test(raw.trim())) {
+      return {
+        ok: false,
+        error: `The ${label} must be a number. Use a point, not a comma, for decimals (1.5) and leave out thousands separators (1000).`,
+      };
+    }
     return { ok: false, error: `The ${label} must be a number, like 2 or 0.5.` };
   }
   return { ok: true, value };
@@ -50,7 +59,6 @@ function parseNonNegative(raw: string | number, label: string): Parsed {
   if (parsed.ok && parsed.value < 0) return { ok: false, error: `The ${label} cannot be negative.` };
   return parsed;
 }
-
 
 function rowCost(input: RowInput): RowResult {
   const quantity = parseNonNegative(input.quantity, 'quantity used');

@@ -105,11 +105,12 @@ function ResultView({ result }: { result: RecipeCostResult }) {
 
 export default function RecipeCostCalculator({ resultId }: Props) {
   const nextKey = useRef(START_ROWS);
-  const addButton = useRef<HTMLButtonElement>(null);
+  const pendingFocus = useRef<string | null>(null);
   const placeholder = useRef<string | null>(null);
   const showingPlaceholder = useRef(true);
   const [rows, setRows] = useState<Row[]>(() => Array.from({ length: START_ROWS }, (_, i) => blankRow(i)));
   const [servings, setServings] = useState('4');
+  const [announcement, setAnnouncement] = useState('');
 
   const result = useMemo(() => calculateRecipeCost(rows, servings), [rows, servings]);
 
@@ -155,9 +156,22 @@ export default function RecipeCostCalculator({ resultId }: Props) {
     setRows((rs) => rs.map((r) => (r.key === key ? { ...r, [field]: value } : r)));
   const addRow = () => setRows((rs) => [...rs, blankRow(nextKey.current++)]);
   const removeRow = (key: number) => {
+    const index = rows.findIndex((r) => r.key === key);
+    if (index === -1 || rows.length === 1) return;
+    // Keep keyboard users where they were: on the row that takes this one's place (or the one above).
+    const neighbour = rows[index + 1] ?? rows[index - 1];
+    pendingFocus.current = `rc-${neighbour.key}-name`;
+    const left = rows.length - 1;
+    setAnnouncement(`Ingredient ${index + 1} removed. ${left} ${left === 1 ? 'ingredient' : 'ingredients'} left.`);
     setRows((rs) => rs.filter((r) => r.key !== key));
-    addButton.current?.focus();
   };
+
+  useEffect(() => {
+    const id = pendingFocus.current;
+    if (!id) return;
+    pendingFocus.current = null;
+    document.getElementById(id)?.focus();
+  }, [rows]);
 
   return (
     <div class="rc">
@@ -188,6 +202,11 @@ export default function RecipeCostCalculator({ resultId }: Props) {
         return (
           <fieldset class="rc-row" key={row.key}>
             <legend>Ingredient {n}</legend>
+            {error && (
+              <p id={errId} class="rc-error">
+                Problem in row {n}: {error}
+              </p>
+            )}
             <TextInput id={`${id}-name`} label="Name" n={n} value={row.name} placeholder="optional" onInput={(v) => setText(row.key, 'name', v)} />
             <div class="rc-pair">
               <TextInput id={`${id}-qty`} label="Amount used" n={n} value={row.quantity} decimal describedBy={errId} onInput={(v) => setText(row.key, 'quantity', v)} />
@@ -198,32 +217,31 @@ export default function RecipeCostCalculator({ resultId }: Props) {
               <UnitSelect id={`${id}-pack-unit`} label="Pack unit" n={n} value={row.packUnit} describedBy={errId} onChange={(v) => setUnit(row.key, 'packUnit', v)} />
             </div>
             <TextInput id={`${id}-price`} label="Pack price (USD)" n={n} value={row.packPrice} decimal describedBy={errId} onInput={(v) => setText(row.key, 'packPrice', v)} />
-            {error && (
-              <p id={errId} class="rc-error">
-                Problem in row {n}: {error}
-              </p>
-            )}
             <div class="rc-row-foot">
               <p class="rc-cost">
                 Cost of row {n}: <strong>{outcome?.kind === 'ok' ? formatUsd(outcome.cost) : 'not calculated'}</strong>
               </p>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                disabled={rows.length === 1}
-                aria-label={`Remove ingredient ${n}${row.name.trim() ? `, ${row.name.trim()}` : ''}`}
-                onClick={() => removeRow(row.key)}
-              >
-                Remove
-              </button>
+              {rows.length > 1 && (
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  aria-label={`Remove ingredient ${n}${row.name.trim() ? `, ${row.name.trim()}` : ''}`}
+                  onClick={() => removeRow(row.key)}
+                >
+                  Remove
+                </button>
+              )}
             </div>
           </fieldset>
         );
       })}
 
-      <button type="button" class="btn btn-primary" ref={addButton} onClick={addRow}>
+      <button type="button" class="btn btn-primary" onClick={addRow}>
         Add ingredient {rows.length + 1}
       </button>
+      <p class="visually-hidden" role="status">
+        {announcement}
+      </p>
     </div>
   );
 }
