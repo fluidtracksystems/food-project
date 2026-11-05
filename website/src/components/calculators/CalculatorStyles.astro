@@ -1,0 +1,157 @@
+---
+---
+
+<!-- Shared calculator styles (.rc-*), moved out of the recipe cost page unchanged. -->
+<style is:global>
+  .rc-about {
+    margin-top: var(--space-8);
+  }
+
+  .rc-servings {
+    max-width: 12rem;
+  }
+
+  .rc {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .rc-row {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+    padding: var(--space-3);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    min-width: 0;
+  }
+
+  .rc-row legend {
+    font-weight: 800;
+    padding: 0 var(--space-2);
+  }
+
+  .rc-pair {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: var(--space-3);
+  }
+
+  .rc-field {
+    min-width: 0;
+  }
+
+  .rc-n {
+    color: var(--muted);
+    font-weight: 400;
+    font-size: var(--text-caption);
+  }
+
+  .rc select {
+    width: 100%;
+    min-height: var(--target);
+    border: 2px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    padding: 0 var(--space-3);
+    font: inherit;
+    background: var(--surface);
+    color: var(--text);
+  }
+
+  .rc-error {
+    margin: 0;
+    padding: var(--space-2) var(--space-3);
+    border-left: 4px solid var(--accent);
+    background: var(--surface-alt);
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+  }
+
+  .rc-row-foot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .rc-cost {
+    margin: 0;
+  }
+
+  .rc .btn[disabled] {
+    color: var(--muted);
+    border-style: dashed;
+    cursor: not-allowed;
+  }
+
+  .rc-result-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-4);
+    justify-content: space-between;
+    align-items: baseline;
+    margin: 0 0 var(--space-2);
+    font-size: var(--text-h4);
+  }
+
+  .rc-result-line strong {
+    font-size: var(--text-h3);
+  }
+
+  .rc-narrow {
+    max-width: 12rem;
+  }
+
+  .rc-age-sex {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: var(--space-3);
+  }
+
+  .rc-hint {
+    margin: 0;
+    color: var(--muted);
+    font-size: var(--text-caption);
+  }
+
+  .rc-plans {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0 var(--space-2);
+  }
+
+  .rc-plans caption {
+    text-align: left;
+    font-weight: 800;
+    padding-bottom: var(--space-2);
+  }
+
+  .rc-plans th,
+  .rc-plans td {
+    padding: var(--space-2) var(--space-3);
+    border-bottom: 1px solid var(--border-subtle);
+    text-align: right;
+  }
+
+  .rc-plans th[scope='row'],
+  .rc-plans thead th:first-child {
+    text-align: left;
+  }
+
+  .rc-plans thead th {
+    font-size: var(--text-caption);
+    color: var(--muted);
+  }
+
+  .rc-fiber-figure {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-3);
+    align-items: baseline;
+  }
+
+  .rc-fiber-figure strong {
+    font-size: var(--text-h2);
+  }
+</style>

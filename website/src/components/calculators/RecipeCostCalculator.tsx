@@ -1,8 +1,7 @@
-import { render } from 'preact';
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
-import { track } from '../../lib/analytics';
 import { calculateRecipeCost, formatUsd, type RecipeCostResult, type RowInput } from '../../lib/calculators/recipe-cost';
 import { UNITS, type Unit } from '../../lib/units';
+import { useLiveResult } from './use-live-result';
 
 interface Props {
   /** Id of the static `role="status"` element (in ToolShell's result slot) that shows the totals. */
@@ -17,8 +16,6 @@ interface Row extends RowInput {
 }
 
 const START_ROWS = 3;
-// Wait for a pause in typing before the polite live region is updated.
-const RESULT_DELAY_MS = 600;
 const UNIT_LABELS: Record<Unit, string> = {
   g: 'g',
   kg: 'kg',
@@ -107,55 +104,20 @@ function ResultView({ result }: { result: RecipeCostResult }) {
 export default function RecipeCostCalculator({ resultId }: Props) {
   const nextKey = useRef(START_ROWS);
   const pendingFocus = useRef<string | null>(null);
-  const placeholder = useRef<string | null>(null);
-  const showingPlaceholder = useRef(true);
-  const reportedUse = useRef(false);
   const [rows, setRows] = useState<Row[]>(() => Array.from({ length: START_ROWS }, (_, i) => blankRow(i)));
   const [servings, setServings] = useState('4');
   const [announcement, setAnnouncement] = useState('');
 
   const result = useMemo(() => calculateRecipeCost(rows, servings), [rows, servings]);
 
-  // The totals live in ToolShell's polite live region (role="status" is atomic, so the whole region
-  // is read out on every change), which is outside this island. To keep a screen reader quiet the
-  // update is debounced until typing pauses, and the untouched start state keeps the static
-  // placeholder, so nothing is announced on load.
-  useEffect(() => {
-    const target = document.getElementById(resultId);
-    if (!target) return;
-    placeholder.current ??= target.innerHTML;
-    const untouched = result.rows.every((r) => r.kind === 'empty');
-    const timer = setTimeout(() => {
-      if (untouched) {
-        restorePlaceholder(target);
-        return;
-      }
-      if (showingPlaceholder.current) {
-        target.textContent = '';
-        showingPlaceholder.current = false;
-      }
-      render(<ResultView result={result} />, target);
-      // Count a use once per page view, the first time a real cost is shown.
-      if (!reportedUse.current && result.rows.some((r) => r.kind === 'ok')) {
-        reportedUse.current = true;
-        track('calculator_used', { tool: 'recipe-cost-calculator' });
-      }
-    }, RESULT_DELAY_MS);
-    return () => clearTimeout(timer);
-  }, [result, resultId]);
-  useEffect(() => {
-    return () => {
-      const target = document.getElementById(resultId);
-      if (target) restorePlaceholder(target);
-    };
-  }, [resultId]);
-
-  function restorePlaceholder(target: HTMLElement) {
-    if (showingPlaceholder.current) return;
-    render(null, target);
-    target.innerHTML = placeholder.current ?? '';
-    showingPlaceholder.current = true;
-  }
+  const untouched = result.rows.every((r) => r.kind === 'empty');
+  useLiveResult({
+    resultId,
+    tool: 'recipe-cost-calculator',
+    result,
+    view: untouched ? null : <ResultView result={result} />,
+    hasFigure: result.rows.some((r) => r.kind === 'ok'),
+  });
 
   const setText = (key: number, field: TextField, value: string) =>
     setRows((rs) => rs.map((r) => (r.key === key ? { ...r, [field]: value } : r)));
