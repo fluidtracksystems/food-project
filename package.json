@@ -9,6 +9,7 @@
   },
   "scripts": {
     "dev": "npm run dev -w website",
+    "down": "node scripts/down.mjs",
     "build": "npm run build -w website",
     "preview": "npm run preview -w website",
     "check": "npm run check -w website",
