@@ -48,7 +48,7 @@ tags:
   - fried-rice
   - leftover-rice
 leftoverNote: "Cool leftover rice within an hour of cooking and keep it covered in the fridge. Use it within 3 to 4 days, and reheat it only once, until steaming hot all the way through."
-draft: true
+draft: false
 ---
 
 Day-old rice is drier and firmer, so the grains fry and toast instead of turning to mush. That is why leftover rice makes better fried rice than a fresh pot ever will. Use whatever is in the freezer for the vegetables and dinner is done.

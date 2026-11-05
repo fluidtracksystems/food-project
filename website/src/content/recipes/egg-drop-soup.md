@@ -48,7 +48,7 @@ tags:
   - egg
   - soup
   - quick
-draft: true
+draft: false
 ---
 
 A spoonful of cornstarch slightly thickens the broth, so the egg floats in silky ribbons instead of breaking into crumbs. Keep the heat low and pour slowly, and it works every time. It is a fast supper when you have no energy for chopping.

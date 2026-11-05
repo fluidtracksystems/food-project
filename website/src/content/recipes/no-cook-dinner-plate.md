@@ -41,7 +41,7 @@ tags:
   - no-cook
   - cheese
   - snack-plate
-draft: true
+draft: false
 ---
 
 On the nights when even a microwave feels like too much, a plate like this is a real dinner. Aim for something salty, something fresh and something crunchy, and it all balances. Swap in whatever is in the fridge: a handful of nuts, a few olives, or a drained can of white beans all work.

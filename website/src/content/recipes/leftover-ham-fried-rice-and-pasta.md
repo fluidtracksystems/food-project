@@ -53,7 +53,7 @@ tags:
   - pasta
   - easter
 leftoverNote: "Cool the finished dish quickly, keep it covered in the fridge and eat it within 3 to 4 days. Reheat until steaming hot throughout, and reheat the rice version only once."
-draft: true
+draft: false
 ---
 
 Ham is already seasoned and cooked, so all it needs is a hot pan to crisp the edges. One shared base of onion, garlic and ham means you can choose rice or pasta depending on what is in the cupboard. Add the ham early enough that it browns rather than just warms.

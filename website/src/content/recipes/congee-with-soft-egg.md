@@ -50,7 +50,7 @@ tags:
   - egg
   - soup
   - sick-day
-draft: true
+draft: false
 ---
 
 Congee is the dish I make when I want something warm and gentle with almost no effort. The long, slow simmer does the work, and the egg poaches itself in the residual heat. Make it plain, then dress it up with whatever you have in the fridge.

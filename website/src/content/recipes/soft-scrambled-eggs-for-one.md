@@ -44,7 +44,7 @@ tags:
   - egg
   - quick
   - protein
-draft: true
+draft: false
 ---
 
 Low heat and constant gentle stirring give you small, creamy curds instead of dry, rubbery ones. Pull the pan off the heat a moment early, because the eggs keep cooking in their own warmth. It is a small plate that feels generous.

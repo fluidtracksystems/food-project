@@ -46,7 +46,7 @@ tags:
   - oats
   - egg
   - breakfast-for-dinner
-draft: true
+draft: false
 ---
 
 Think of it as a quick risotto made from oats. Cooking them in stock instead of milk turns them into a proper savory base, and the runny yolk makes its own sauce.

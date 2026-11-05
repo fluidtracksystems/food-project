@@ -50,7 +50,7 @@ tags:
   - beans
   - protein
   - no-cook
-draft: true
+draft: false
 ---
 
 Tinned tuna and beans are pantry staples that make a proper meal in minutes. The lemon-soaked onion brings sharpness, and mashing a few beans gives a creamy dressing without any mayonnaise. Taste before you serve, because beans soak up salt.

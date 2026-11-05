@@ -49,7 +49,7 @@ tags:
   - pasta
   - tomato
   - one-pot
-draft: true
+draft: false
 ---
 
 The pasta releases starch as it cooks, which thickens the sauce with no draining and no extra pan. Stir often toward the end, because that is when it can catch on the bottom.

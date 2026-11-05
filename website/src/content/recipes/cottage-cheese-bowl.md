@@ -51,7 +51,7 @@ tags:
   - cottage-cheese
   - no-cook
   - protein
-draft: true
+draft: false
 ---
 
 A small bowl with real flavour is easier to finish than a big plate with none. Cottage cheese is a blank canvas that takes sweet or savory toppings, so you can pick whichever suits your mood. Salt the savory version well, because cottage cheese is mild.

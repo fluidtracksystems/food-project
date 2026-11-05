@@ -53,7 +53,7 @@ tags:
   - salad
   - leftover-chicken
 leftoverNote: "Use cooked chicken within 3 to 4 days of cooking and keep it covered in the fridge. Reheat the soup until steaming hot, and keep the salad chilled until you serve it."
-draft: true
+draft: false
 ---
 
 Cooked chicken goes dry if you boil it hard, so it goes into the soup at the very end just to warm through. Tonight it is soup, tomorrow it can be a lemony salad from the same bird. Either way it comes together in one pot or one bowl.

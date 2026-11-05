@@ -43,7 +43,7 @@ tags:
   - egg
   - frittata
 leftoverNote: "Use leftover pasta within 3 to 4 days of cooking. Keep the finished frittata covered in the fridge for the same time and reheat it until steaming hot."
-draft: true
+draft: false
 ---
 
 Cooked pasta soaks up egg and turns the frittata into something sturdy enough to slice. Keep the heat gentle so the base browns without the middle turning rubbery. Any leftover vegetables or bits of cheese can go in too.

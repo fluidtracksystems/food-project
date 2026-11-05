@@ -47,7 +47,7 @@ tags:
   - pan-fried
   - egg
 leftoverNote: "Chill leftover mash quickly and use it within 3 to 4 days. Cooked cakes keep covered in the fridge for the same time, and should be reheated until steaming hot."
-draft: true
+draft: false
 ---
 
 Cold mash is firm enough to shape, which is why this works better with leftovers than with fresh potato. Leave the cakes alone in the pan so a proper crust forms before you turn them.

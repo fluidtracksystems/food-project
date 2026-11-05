@@ -48,7 +48,7 @@ tags:
   - chicken
   - soup
   - leftover-friendly
-draft: true
+draft: false
 ---
 
 Browning the vegetables first and adding a little ginger gives a small pot of soup a lot more flavour than boiling everything together. Thigh meat stays tender in a short simmer, where breast can turn dry. If you cook double, the rest keeps well in the fridge for a day or two.

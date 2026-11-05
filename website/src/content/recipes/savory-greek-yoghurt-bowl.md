@@ -46,7 +46,7 @@ tags:
   - yoghurt
   - no-cook
   - protein
-draft: true
+draft: false
 ---
 
 This is tzatziki turned into a meal: cool, tangy and rich with olive oil. The lemon and salt make plain yoghurt taste like dinner instead of breakfast. Use full-fat yoghurt if you can, because it holds its shape and tastes better.
