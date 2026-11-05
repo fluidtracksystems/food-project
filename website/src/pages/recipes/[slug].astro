@@ -2,17 +2,23 @@
 import { Image, getImage } from 'astro:assets';
 import { render } from 'astro:content';
 import JsonLd from '../../components/JsonLd.astro';
+import RelatedRecipes from '../../components/RelatedRecipes.astro';
 import RecipeLayout from '../../layouts/RecipeLayout.astro';
 import { buildRecipeJsonLd } from '../../lib/recipe-jsonld';
+import { relatedRecipes } from '../../lib/related';
 import { getRecipes } from '../../lib/recipes';
 import { absoluteUrl } from '../../lib/site';
 
 export async function getStaticPaths() {
   const recipes = await getRecipes();
-  return recipes.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+  return recipes.map((entry) => ({
+    params: { slug: entry.id },
+    // Related links are chosen here, where the full list is at hand.
+    props: { entry, related: relatedRecipes(entry, recipes, 2) },
+  }));
 }
 
-const { entry } = Astro.props;
+const { entry, related } = Astro.props;
 const { Content } = await render(entry);
 
 // JSON-LD and Open Graph need an absolute URL to the optimised image.
@@ -34,4 +40,7 @@ const jsonLd = buildRecipeJsonLd(entry.data, { id: entry.id, url, imageUrl });
   </Fragment>
   <Content />
   <JsonLd data={jsonLd} />
+  <Fragment slot="after">
+    <RelatedRecipes heading="More to cook" recipes={related} />
+  </Fragment>
 </RecipeLayout>
