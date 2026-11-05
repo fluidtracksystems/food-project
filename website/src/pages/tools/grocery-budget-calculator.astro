@@ -1,0 +1,121 @@
+---
+import CalculatorStyles from '../../components/calculators/CalculatorStyles.astro';
+import GroceryBudgetCalculator from '../../components/calculators/GroceryBudgetCalculator';
+import EmailSignup from '../../components/EmailSignup.astro';
+import RecipeCard from '../../components/RecipeCard.astro';
+import ToolShell from '../../components/ToolShell.astro';
+import { USDA_FOOD_PLANS } from '../../data/usda-food-plans';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getRecipes } from '../../lib/recipes';
+
+const title = 'Grocery budget calculator: USDA food plans';
+const description =
+  'Estimate a household’s weekly and monthly food-at-home cost under the four USDA Food Plans, by age and sex. Free, in US dollars.';
+const [landing, thriftyReport, threeLevelReport, tfp2021] = USDA_FOOD_PLANS.sources;
+
+// Newest first. A production build may have no published recipes yet: then nothing renders.
+const recipes = (await getRecipes()).slice(0, 3);
+---
+
+<BaseLayout title={title} description={description}>
+  <CalculatorStyles />
+  <ToolShell
+    title="Grocery budget calculator"
+    purpose="Add the people in your household. You get USDA's estimated weekly and monthly cost of food at home under each of its four food plans."
+  >
+    <GroceryBudgetCalculator client:visible resultId="gb-result" />
+    <noscript>
+      <p>This calculator needs JavaScript. The explanation and the formula below work without it.</p>
+    </noscript>
+    <div slot="result" id="gb-result">
+      <p>Your estimate will appear here once you enter an age.</p>
+    </div>
+    <Fragment slot="source">
+      <p>
+        Source: USDA Food Plans, {USDA_FOOD_PLANS.asOfLabel}. Figures are estimates of the cost of a nutritious diet at
+        home, not what households actually spend.
+      </p>
+    </Fragment>
+  </ToolShell>
+
+  <section class="prose rc-about" aria-labelledby="how-h">
+    <!-- TODO(chef): review cost assumptions -->
+    <h2 id="how-h">How to use it</h2>
+    <ol>
+      <li>Enter the age of each person in the household.</li>
+      <li>From age 12, choose female or male. Under 12 the USDA costs do not depend on sex.</li>
+      <li>Add or remove people as you need. Blank rows are ignored.</li>
+      <li>Read the four plans side by side. Each one is a separate figure.</li>
+    </ol>
+
+    <h2 id="formula-h">The formula</h2>
+    <p>
+      For each plan, add up USDA's cost for each person's age and sex, then apply USDA's household-size adjustment to
+      the total: 1 person adds 20 percent, 2 people add 10 percent, 3 people add 5 percent, 4 people have no
+      adjustment, 5 or 6 people subtract 5 percent, and 7 or more people subtract 10 percent. The weekly and monthly
+      costs are each taken from USDA's printed tables, so the monthly figure is not simply the weekly figure
+      multiplied by 4.333.
+    </p>
+    <p>
+      For example, a man and a woman aged 30 with children aged 7 and 10 is a household of four, so there is no
+      adjustment. On the Thrifty plan, weekly that is $73.60 + $58.60 + $48.30 + $55.80 = $236.30.
+    </p>
+
+    <h2 id="plans-h">The four plans</h2>
+    <p>
+      The USDA Food Plans are Thrifty, Low-Cost, Moderate-Cost and Liberal. They are shown side by side and should not
+      be read as a ladder from cheapest to dearest. The Thrifty plan uses newer data than the other three plans, and
+      for some age and sex groups its cost is higher than the Low-Cost plan.
+    </p>
+
+    <h2 id="sources-h">Sources</h2>
+    <ul>
+      <li>
+        USDA Cost of Food at Home reports, {USDA_FOOD_PLANS.asOfLabel}: <a href={landing.url} rel="noopener">{landing.name}</a>.
+        It lists the Thrifty Food Plan report and the Low-Cost, Moderate-Cost and Liberal report. Read on{' '}
+        {USDA_FOOD_PLANS.retrieved}.
+      </li>
+      <li>
+        <a href={thriftyReport.url} rel="noopener">{thriftyReport.name}</a>.
+      </li>
+      <li>
+        <a href={threeLevelReport.url} rel="noopener">{threeLevelReport.name}</a>.
+      </li>
+      <li>
+        USDA, <a href={tfp2021.url} rel="noopener">{tfp2021.name}</a>, August 2021.
+      </li>
+    </ul>
+
+    <h2 id="limits-h">What it does not do</h2>
+    <ul>
+      <li>
+        The figures are USDA's costs of a nutritious diet at home, not what households actually spend, and not a
+        recommendation to spend a given amount.
+      </li>
+      <li>
+        They are US average costs. USDA publishes separate Alaska and Hawaii figures for the Thrifty plan only, and this
+        calculator does not use them.
+      </li>
+      <li>They cover food at home only. Restaurant and takeaway meals are not included.</li>
+      <li>Infants under 1 are not covered by the USDA plans, so the calculator starts at age 1.</li>
+      <li>USDA updates its costs monthly. This page shows one month: {USDA_FOOD_PLANS.asOfLabel}.</li>
+      <li>The calculator takes up to 12 people and does not use income.</li>
+    </ul>
+  </section>
+
+  {
+    recipes.length > 0 && (
+      <section class="no-print" aria-labelledby="recipes-h">
+        <h2 id="recipes-h">Recipes to stretch the budget</h2>
+        <ul class="grid">
+          {recipes.map((r) => (
+            <li>
+              <RecipeCard id={r.id} recipe={r.data} />
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+  <EmailSignup />
+</BaseLayout>

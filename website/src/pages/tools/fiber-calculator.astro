@@ -1,0 +1,111 @@
+---
+import CalculatorStyles from '../../components/calculators/CalculatorStyles.astro';
+import FiberCalculator from '../../components/calculators/FiberCalculator';
+import EmailSignup from '../../components/EmailSignup.astro';
+import RecipeCard from '../../components/RecipeCard.astro';
+import ToolShell from '../../components/ToolShell.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getRecipes } from '../../lib/recipes';
+
+const title = 'Fiber calculator: daily guideline by age';
+const description =
+  'See the general daily fiber guideline for healthy people by age and sex, with an optional calorie-based figure for adults. Free, in grams.';
+
+// Newest first. A production build may have no published recipes yet: then nothing renders.
+const recipes = (await getRecipes()).slice(0, 3);
+---
+
+<BaseLayout title={title} description={description}>
+  <CalculatorStyles />
+  <ToolShell
+    title="Fiber calculator"
+    purpose="Enter an age and sex to see the general daily fiber guideline for healthy people. Adults can add their calories for a second figure."
+  >
+    <FiberCalculator client:visible resultId="fc-result" />
+    <noscript>
+      <p>This calculator needs JavaScript. The explanation and the tables behind it are written out below.</p>
+    </noscript>
+    <div slot="result" id="fc-result">
+      <p>Your guideline will appear here once you enter an age and choose a sex.</p>
+    </div>
+    <Fragment slot="source">
+      <p>
+        This is a general guideline for healthy people, not medical or dietary advice. Talk to a doctor or registered
+        dietitian about your own needs.
+      </p>
+    </Fragment>
+  </ToolShell>
+
+  <section class="prose rc-about" aria-labelledby="how-h">
+    <!-- TODO(dietitian): review before launch -->
+    <h2 id="how-h">How to use it</h2>
+    <ol>
+      <li>Enter an age in whole years, 4 or over, and choose female or male.</li>
+      <li>The first figure is the Adequate Intake for that age and sex.</li>
+      <li>Adults aged 19 and over can also enter their calories a day to see a second, separate figure.</li>
+    </ol>
+
+    <h2 id="two-h">Two figures, two bases</h2>
+    <p>
+      <strong>Adequate Intake by age and sex.</strong> The first figure is the Adequate Intake (AI) for total fiber
+      from the Food and Nutrition Board of the National Academies (IOM), in Dietary
+      Reference Intakes for Energy, Carbohydrate, Fiber, Fat, Fatty Acids, Cholesterol, Protein, and Amino Acids
+      (2002/2005). The Board's table note says the AI is believed to cover the needs of all healthy individuals in the
+      groups. Its values are 25 g a day for ages 4 to 8; 31 g (male) and 26 g (female) for ages 9 to 13; 38 g and 26 g
+      for ages 14 to 18; 38 g and 25 g for ages 19 to 30 and 31 to 50; and 30 g and 21 g for ages 51 to 70 and over 70.
+      The source table is the
+      <a
+        href="https://www.nationalacademies.org/index.php/cdn/materials/9fb9fae6-337c-4b7c-9821-2c81d1f65ad0"
+        rel="noopener">DRI summary table (National Academies)</a
+      >, which is marked as a prepublication copy with uncorrected proofs.
+    </p>
+    <p>
+      <strong>14 g per 1,000 calories.</strong> The second figure is 14 g of fiber for every 1,000 kcal you enter,
+      rounded to the nearest gram. This basis appears in Appendix 1 of the
+      <a
+        href="https://www.dietaryguidelines.gov/sites/default/files/2020-12/Dietary_Guidelines_for_Americans_2020-2025.pdf"
+        rel="noopener">Dietary Guidelines for Americans, 2020-2025</a
+      >. The 2025-2030 edition does not give a gram target for fiber.
+    </p>
+    <p>
+      The two figures can differ. The IOM table gives one value for each age and sex group, while the Dietary Guidelines
+      apply 14 g per 1,000 kcal at fixed calorie levels, so the calorie level each one assumes is likely part of the
+      reason. Neither is a target set for you.
+    </p>
+
+    <h2 id="adding-h">Adding fiber</h2>
+    <p>
+      NIH MedlinePlus advises adding fiber gradually, over a period of a few weeks, and drinking water with it
+      (<a href="https://medlineplus.gov/ency/article/002470.htm" rel="noopener">MedlinePlus, fiber in diet</a>).
+    </p>
+
+    <h2 id="limits-h">What it does not do</h2>
+    <ul>
+      <li>It covers ages 4 and over only. There are no values for younger children, pregnancy or breastfeeding.</li>
+      <li>
+        The calorie range of 1,000 to 4,000 kcal a day is this site's own limit. It does not come from the sources.
+      </li>
+      <li>The calorie-based figure is only given for ages 19 and over. The Adequate Intake never depends on calories.</li>
+      <li>
+        This is a general guideline for healthy people, not medical or dietary advice. Talk to a doctor or registered
+        dietitian about your own needs.
+      </li>
+    </ul>
+  </section>
+
+  {
+    recipes.length > 0 && (
+      <section class="no-print" aria-labelledby="recipes-h">
+        <h2 id="recipes-h">Recipes to try</h2>
+        <ul class="grid">
+          {recipes.map((r) => (
+            <li>
+              <RecipeCard id={r.id} recipe={r.data} />
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+  <EmailSignup />
+</BaseLayout>
