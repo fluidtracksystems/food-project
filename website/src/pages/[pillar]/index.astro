@@ -1,0 +1,42 @@
+---
+import RecipeCard from '../../components/RecipeCard.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { PILLAR_PAGES } from '../../lib/pillars';
+import { listedPillars, recipesInPillar } from '../../lib/related';
+import type { Pillar } from '../../lib/recipe-schema';
+import { getRecipes, includeDrafts } from '../../lib/recipes';
+
+// Production only builds hubs that list recipes, so an empty hub never reaches the sitemap or
+// the index. Dev and drafts builds keep every hub so navigation works while content is added.
+export async function getStaticPaths() {
+  return listedPillars(await getRecipes(), includeDrafts()).map((pillar) => ({ params: { pillar } }));
+}
+
+const pillar = Astro.params.pillar as Pillar;
+const page = PILLAR_PAGES[pillar];
+const recipes = recipesInPillar(await getRecipes(), pillar);
+---
+
+<!-- An empty hub is a thin page: keep it out of the index until it lists recipes. -->
+<BaseLayout title={page.title} description={page.description} noindex={recipes.length === 0}>
+  <section class="hero">
+    <h1>{page.title}</h1>
+    <p class="lead">{page.intro}</p>
+  </section>
+  <section aria-labelledby="recipes-h">
+    <h2 id="recipes-h">Recipes</h2>
+    {
+      recipes.length > 0 ? (
+        <ul class="grid">
+          {recipes.map((r) => (
+            <li>
+              <RecipeCard id={r.id} recipe={r.data} />
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>Recipes for this section are coming soon.</p>
+      )
+    }
+  </section>
+</BaseLayout>

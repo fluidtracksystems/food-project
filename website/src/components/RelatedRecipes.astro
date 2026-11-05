@@ -1,0 +1,32 @@
+---
+import type { RecipeData } from '../lib/recipe-schema';
+import RecipeCard from './RecipeCard.astro';
+
+interface Props {
+  heading: string;
+  recipes: { id: string; data: RecipeData }[];
+}
+
+const { heading, recipes } = Astro.props;
+---
+
+{
+  recipes.length > 0 && (
+    <section class="related no-print" aria-labelledby="related-h">
+      <h2 id="related-h">{heading}</h2>
+      <ul class="grid">
+        {recipes.map((r) => (
+          <li>
+            <RecipeCard id={r.id} recipe={r.data} />
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
+<style>
+  .related {
+    margin-top: var(--space-6);
+  }
+</style>

@@ -4,7 +4,7 @@ import EffortBadge from '../components/EffortBadge.astro';
 import IngredientTable from '../components/IngredientTable.astro';
 import PrintButton from '../components/PrintButton.astro';
 import RecipeFacts from '../components/RecipeFacts.astro';
-import { formatDate, updatedDate } from '../lib/recipe-display';
+import { formatDate, pillarLabel, pillarPath, updatedDate } from '../lib/recipe-display';
 import type { RecipeData } from '../lib/recipe-schema';
 import { AUTHOR_BOX_VARIANT } from '../lib/site';
 import BaseLayout from './BaseLayout.astro';
@@ -29,7 +29,8 @@ const updated = updatedDate(recipe);
   <article class="recipe">
     <h1>{recipe.title}</h1>
     <p class="meta">
-      <EffortBadge label={recipe.effort} /> &middot; Updated {formatDate(updated)}
+      <EffortBadge label={recipe.effort} /> &middot;
+      <a href={pillarPath(recipe.pillar)}>{pillarLabel(recipe.pillar)}</a> &middot; Updated {formatDate(updated)}
     </p>
     <div class="row actions">
       <a class="btn btn-primary no-print" href="#ingredients">Jump to recipe</a>
@@ -57,6 +58,7 @@ const updated = updatedDate(recipe);
     </div>
     <AuthorBox variant={AUTHOR_BOX_VARIANT} author={recipe.author} updated={updated} />
   </article>
+  <slot name="after" />
 </BaseLayout>
 
 <style is:global>

@@ -1,10 +1,16 @@
 ---
 import RecipeCard from '../components/RecipeCard.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getRecipes } from '../lib/recipes';
+import { PILLAR_PAGES } from '../lib/pillars';
+import { pillarLabel, pillarPath } from '../lib/recipe-display';
+import { listedPillars } from '../lib/related';
+import { getRecipes, includeDrafts } from '../lib/recipes';
 import { SITE_NAME, SITE_DESCRIPTION } from '../lib/site';
 
-const latest = (await getRecipes()).slice(0, 6);
+const all = await getRecipes();
+const latest = all.slice(0, 6);
+// Only link hubs that exist: the same rule as the hub route.
+const pillars = listedPillars(all, includeDrafts());
 ---
 
 <BaseLayout title={SITE_NAME} description={SITE_DESCRIPTION}>
@@ -12,6 +18,23 @@ const latest = (await getRecipes()).slice(0, 6);
     <h1>{SITE_NAME}</h1>
     <p class="lead">{SITE_DESCRIPTION}</p>
   </section>
+  {
+    pillars.length > 0 && (
+      <section aria-labelledby="pillars-h">
+        <h2 id="pillars-h">Cook what suits today</h2>
+        <ul class="grid">
+          {pillars.map((p) => (
+            <li class="pillar-card">
+              <h3>
+                <a href={pillarPath(p)}>{pillarLabel(p)}</a>
+              </h3>
+              <p>{PILLAR_PAGES[p].intro}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
   <section aria-labelledby="latest-h">
     <h2 id="latest-h">Latest recipes</h2>
     {
