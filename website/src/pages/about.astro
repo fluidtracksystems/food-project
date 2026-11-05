@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { PILLAR_PAGES } from '../lib/pillars';
+import { pillarLabel, pillarPath } from '../lib/recipe-display';
+import { listedPillars } from '../lib/related';
+import { getRecipes, includeDrafts } from '../lib/recipes';
+import { SITE_NAME } from '../lib/site';
+
+const title = 'About';
+const description =
+  'A New Zealand-based chef writing low-effort, small-portion and leftover recipes, with free kitchen calculators that show their working.';
+
+// Link only to hubs that are built, the same rule as the home page.
+const pillars = listedPillars(await getRecipes(), includeDrafts());
+---
+
+<BaseLayout title={title} description={description}>
+  <!-- TODO(chef): add the chef's story, name and credentials. Until the named-face decision is made this page
+       says only what is already known. -->
+  <article class="prose">
+    <h1>About {SITE_NAME}</h1>
+    <p class="lead">Easy, chef-written cooking for the days when you have little energy, appetite or money to spare.</p>
+
+    <p>
+      The recipes here are written by a New Zealand-based chef for home cooks, with readers in the United States in
+      mind. They keep the ingredient lists short, the washing-up small and the flavour big.
+    </p>
+
+    <h2>What you will find</h2>
+    <ul>
+      <li>
+        <strong>Low-energy cooking:</strong> lazy, no-cook and one-pan meals for tired days.
+      </li>
+      <li>
+        <strong>Small-portion cooking:</strong> small, protein-rich meals with big flavour for when you want less on the
+        plate.
+      </li>
+      <li>
+        <strong>Leftovers and cooking for one:</strong> turning last night's dinner into something you want to eat again.
+      </li>
+      <li>
+        <strong>Free calculators:</strong> <a href="/tools/">simple tools</a> for recipe cost, a grocery budget and a
+        fiber guideline. Each one shows its formula and names its sources.
+      </li>
+    </ul>
+
+    {
+      pillars.length > 0 && (
+        <>
+          <h2>Start here</h2>
+          <ul>
+            {pillars.map((p) => (
+              <li>
+                <a href={pillarPath(p)}>{pillarLabel(p)}</a>: {PILLAR_PAGES[p].description}
+              </li>
+            ))}
+          </ul>
+        </>
+      )
+    }
+
+    <h2>What this site is not</h2>
+    <p>
+      It gives no medical or dietary advice. Read the <a href="/disclaimer/">disclaimer</a> for how to use the recipes and
+      calculators.
+    </p>
+  </article>
+</BaseLayout>
