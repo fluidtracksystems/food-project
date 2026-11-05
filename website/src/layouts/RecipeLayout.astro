@@ -40,6 +40,9 @@ const updated = updatedDate(recipe);
     <p>{recipe.description}</p>
     <RecipeFacts recipe={recipe} />
     <h2 id="ingredients">Ingredients</h2>
+    <p class="no-print">
+      <a href="/tools/recipe-cost-calculator/">Work out what this recipe costs per serving</a>
+    </p>
     <IngredientTable ingredients={recipe.ingredients} />
     <h2 class="method-heading">Method</h2>
     <ol class="steps">
