@@ -141,6 +141,21 @@ describe('calculateRecipeCost: invalid input', () => {
     expect(bad({ quantity: '1e' })).toMatch(/number/i);
   });
 
+  it('explains that a comma is not accepted, for decimals or thousands', () => {
+    for (const typed of ['1,5', '1,000', '1,000.50', '12,5']) {
+      const message = bad({ packSize: typed });
+      expect(message).toMatch(/number/i);
+      expect(message).toMatch(/comma/i);
+      expect(message).toMatch(/1\.5/);
+    }
+  });
+
+  it('does not mention commas for other bad input', () => {
+    expect(bad({ quantity: 'abc' })).not.toMatch(/comma/i);
+    expect(bad({ quantity: '$4' })).not.toMatch(/comma/i);
+    expect(bad({ quantity: '1,a' })).not.toMatch(/comma/i);
+  });
+
   it('rejects NaN and Infinity as text or number', () => {
     expect(bad({ quantity: 'NaN' })).toMatch(/number/i);
     expect(bad({ quantity: 'Infinity' })).toMatch(/number/i);
@@ -201,6 +216,14 @@ describe('calculateRecipeCost: servings', () => {
     expect(r.total).toBe(1);
   });
 
+  it('explains a comma in servings too', () => {
+    expect(calculateRecipeCost([rice], '1,5').servingsError).toMatch(/serving/i);
+  });
+
+  it('reads exponent notation like any other number: 1e1 servings is 10', () => {
+    expect(calculateRecipeCost([rice], '1e1').perServing).toBe(0.1);
+  });
+
   it('accepts whole numbers including a trailing .0', () => {
     expect(calculateRecipeCost([rice], '4').servingsError).toBeUndefined();
     expect(calculateRecipeCost([rice], '4.0').perServing).toBe(0.25);
@@ -227,6 +250,13 @@ describe('formatUsd', () => {
 
   it('absorbs floating point noise on an exact half cent', () => {
     expect(formatUsd(0.1 + 0.2 - 0.295)).toBe('$0.01');
+  });
+
+  it('treats a value within 12 significant digits of a half cent as the half cent', () => {
+    // Documents the deliberate tolerance in formatUsd: noise below the 12th digit is ignored,
+    // while a genuine difference above it is not.
+    expect(formatUsd(0.00499999999999999)).toBe('$0.01');
+    expect(formatUsd(0.0049999)).toBe('$0.00');
   });
 
   it('handles very large amounts', () => {
