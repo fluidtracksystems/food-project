@@ -27,3 +27,6 @@ gtm/
 *.log
 .DS_Store
 Thumbs.db
+
+# manual FTP staging folder
+stage_upload/
