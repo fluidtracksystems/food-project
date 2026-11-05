@@ -1,0 +1,176 @@
+---
+import RecipeCostCalculator from '../../components/calculators/RecipeCostCalculator';
+import RecipeCard from '../../components/RecipeCard.astro';
+import ToolShell from '../../components/ToolShell.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getRecipes } from '../../lib/recipes';
+
+const title = 'Recipe cost calculator';
+const description =
+  'Work out what a recipe costs in total and per serving from the pack prices of your ingredients. Free, in US dollars, metric and US units.';
+
+// Newest first. A production build may have no published recipes yet: then nothing renders.
+const recipes = (await getRecipes()).slice(0, 3);
+---
+
+<BaseLayout title={title} description={description}>
+  <ToolShell title={title} purpose="Enter what you paid for each pack and how much of it the recipe uses. You get the total cost and the cost of one serving.">
+    <RecipeCostCalculator client:visible resultId="rc-result" />
+    <noscript>
+      <p>This calculator needs JavaScript. The explanation and the formula below work without it.</p>
+    </noscript>
+    <div slot="result" id="rc-result">
+      <p>Your total and cost per serving will appear here once you enter an ingredient.</p>
+    </div>
+    <Fragment slot="source">
+      <p>
+        Unit definitions follow the US customary values in NIST Handbook 44, Appendix C (General Tables of Units of
+        Measurement) and NIST Special Publication 811. Results are estimates.
+      </p>
+    </Fragment>
+  </ToolShell>
+
+  <section class="prose rc-about" aria-labelledby="how-h">
+    <!-- TODO(chef): review cost assumptions -->
+    <h2 id="how-h">How to use it</h2>
+    <ol>
+      <li>Set the number of servings the recipe makes.</li>
+      <li>For each ingredient, enter the amount the recipe uses and its unit.</li>
+      <li>Enter the size and price of the pack you buy, for example 1 kg for $4.00.</li>
+      <li>Add or remove ingredient rows as you need. Empty rows are ignored.</li>
+    </ol>
+
+    <h2 id="formula-h">The formula</h2>
+    <p>
+      The cost of an ingredient is the pack price multiplied by the amount used divided by the pack size, after the
+      amount used is converted into the pack's unit. The cost per serving is the total cost divided by the number of
+      servings.
+    </p>
+    <p>For example, 250 g from a 1 kg pack at $4.00 costs $4.00 &times; (0.25 kg &divide; 1 kg) = $1.00.</p>
+
+    <h2 id="limits-h">What it does not do</h2>
+    <ul>
+      <li>It does not include food waste, trimming loss, tax, energy or labour.</li>
+      <li>
+        Weights and volumes cannot be converted to each other without the ingredient's density. If the pack is
+        weighed in grams, enter the amount used as a weight too. Use the same kind of unit as the pack: weight,
+        volume or count.
+      </li>
+      <li>Prices are in US dollars. Amounts are rounded to the cent only when shown.</li>
+      <li>It is a budgeting estimate. It gives no medical or dietary advice.</li>
+    </ul>
+  </section>
+
+  {
+    recipes.length > 0 && (
+      <section class="no-print" aria-labelledby="recipes-h">
+        <h2 id="recipes-h">Recipes to price</h2>
+        <ul class="grid">
+          {recipes.map((r) => (
+            <li>
+              <RecipeCard id={r.id} recipe={r.data} />
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+</BaseLayout>
+
+<style is:global>
+  .rc-about {
+    margin-top: var(--space-8);
+  }
+
+  .rc {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .rc-servings {
+    max-width: 12rem;
+  }
+
+  .rc-row {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+    padding: var(--space-3);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    min-width: 0;
+  }
+
+  .rc-row legend {
+    font-weight: 800;
+    padding: 0 var(--space-2);
+  }
+
+  .rc-pair {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+    gap: var(--space-3);
+  }
+
+  .rc-field {
+    min-width: 0;
+  }
+
+  .rc-n {
+    color: var(--muted);
+    font-weight: 400;
+    font-size: var(--text-caption);
+  }
+
+  .rc select {
+    width: 100%;
+    min-height: var(--target);
+    border: 2px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    padding: 0 var(--space-3);
+    font: inherit;
+    background: var(--surface);
+    color: var(--text);
+  }
+
+  .rc-error {
+    margin: 0;
+    padding: var(--space-2) var(--space-3);
+    border-left: 4px solid var(--accent);
+    background: var(--surface-alt);
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+  }
+
+  .rc-row-foot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .rc-cost {
+    margin: 0;
+  }
+
+  .rc .btn[disabled] {
+    color: var(--muted);
+    border-style: dashed;
+    cursor: not-allowed;
+  }
+
+  .rc-result-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-4);
+    justify-content: space-between;
+    align-items: baseline;
+    margin: 0 0 var(--space-2);
+    font-size: var(--text-h4);
+  }
+
+  .rc-result-line strong {
+    font-size: var(--text-h3);
+  }
+</style>

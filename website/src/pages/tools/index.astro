@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { TOOLS } from '../../lib/tools';
+
+const title = 'Kitchen calculators';
+const description = 'Free, plain calculators for the home kitchen. Start with the recipe cost calculator to price a meal per serving.';
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="hero">
+    <h1>{title}</h1>
+    <p class="lead">Small tools that do one job and show their working.</p>
+  </section>
+  <ul class="grid tools-list">
+    {
+      TOOLS.map((t) => (
+        <li class="tool-card">
+          <h2>
+            <a href={t.path}>{t.title}</a>
+          </h2>
+          <p>{t.blurb}</p>
+        </li>
+      ))
+    }
+  </ul>
+</BaseLayout>
+
+<style>
+  .tool-card {
+    background: var(--surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow);
+    padding: var(--space-4) 1.25rem;
+  }
+
+  .tool-card h2 {
+    font-size: var(--text-h3);
+    margin-top: 0;
+  }
+
+  .tool-card p {
+    margin-bottom: 0;
+  }
+</style>
