@@ -8,6 +8,7 @@ interface Props {
   title: string;
   description: string;
   image?: string;
+  imageAlt?: string;
   noindex?: boolean;
   type?: 'website' | 'article';
 }
@@ -27,5 +28,8 @@ const props = Astro.props;
       <slot />
     </main>
     <SiteFooter />
+    <script>
+      import '../scripts/track';
+    </script>
   </body>
 </html>

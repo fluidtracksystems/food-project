@@ -1,5 +1,6 @@
 import { render } from 'preact';
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
+import { track } from '../../lib/analytics';
 import { calculateRecipeCost, formatUsd, type RecipeCostResult, type RowInput } from '../../lib/calculators/recipe-cost';
 import { UNITS, type Unit } from '../../lib/units';
 
@@ -108,6 +109,7 @@ export default function RecipeCostCalculator({ resultId }: Props) {
   const pendingFocus = useRef<string | null>(null);
   const placeholder = useRef<string | null>(null);
   const showingPlaceholder = useRef(true);
+  const reportedUse = useRef(false);
   const [rows, setRows] = useState<Row[]>(() => Array.from({ length: START_ROWS }, (_, i) => blankRow(i)));
   const [servings, setServings] = useState('4');
   const [announcement, setAnnouncement] = useState('');
@@ -133,6 +135,11 @@ export default function RecipeCostCalculator({ resultId }: Props) {
         showingPlaceholder.current = false;
       }
       render(<ResultView result={result} />, target);
+      // Count a use once per page view, the first time a real cost is shown.
+      if (!reportedUse.current && result.rows.some((r) => r.kind === 'ok')) {
+        reportedUse.current = true;
+        track('calculator_used', { tool: 'recipe-cost-calculator' });
+      }
     }, RESULT_DELAY_MS);
     return () => clearTimeout(timer);
   }, [result, resultId]);

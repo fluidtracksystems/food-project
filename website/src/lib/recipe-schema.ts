@@ -1,7 +1,9 @@
 import { z } from 'astro/zod';
+import { PILLARS, type Pillar } from './pillar-list';
 
-export const PILLARS = ['low-energy', 'small-portion', 'leftovers'] as const;
-export type Pillar = (typeof PILLARS)[number];
+// Re-exported so existing imports from this module keep working.
+export { PILLARS };
+export type { Pillar };
 
 const ingredientSchema = z.object({
   item: z.string().min(1),

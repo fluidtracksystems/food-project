@@ -28,7 +28,7 @@ const url = absoluteUrl(Astro.url.pathname, Astro.site);
 const jsonLd = buildRecipeJsonLd(entry.data, { id: entry.id, url, imageUrl });
 ---
 
-<RecipeLayout recipe={entry.data} ogImage={imageUrl} noindex={entry.data.draft}>
+<RecipeLayout recipe={entry.data} ogImage={imageUrl} slug={entry.id} noindex={entry.data.draft}>
   <Fragment slot="photo">
     <Image
       src={entry.data.image}
