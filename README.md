@@ -17,6 +17,7 @@ A chef-led, SEO-first recipe and calculator site: low-energy cooking, small-port
 - PRD: `.claude/PRPs/prds/chef-low-effort-kitchen.prd.md`
 - Stack spec: `docs/specs/01-stack.md`
 - ECC setup order: `docs/specs/06-ecc-setup.md`
+- Contact form, local previews and deployment checks: `docs/specs/08-contact-form.md`
 
 ## Status
 

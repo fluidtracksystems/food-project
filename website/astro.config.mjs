@@ -8,6 +8,13 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: process.env.SITE_URL ?? 'https://food.quantityhost.com',
   trailingSlash: 'always',
+  vite: {
+    build: {
+      // Keep the contact page's processed script as a hashed asset, even below 4 KB.
+      // Returning undefined preserves Vite's default for every other asset.
+      assetsInlineLimit: (filePath) => filePath.includes('contact.astro_astro_type_script') ? false : undefined,
+    },
+  },
   // Nunito (OFL-1.1) is self-hosted at build time by Astro's Fonts API.
   fonts: [
     {
