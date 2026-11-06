@@ -15,6 +15,7 @@ export const NAV_ITEMS: NavItem[] = [
 
 export const FOOTER_LINKS: NavItem[] = [
   ...NAV_ITEMS,
+  { label: 'Contact', href: '/contact/' },
   { label: 'Privacy', href: '/privacy/' },
   { label: 'Disclaimer', href: '/disclaimer/' },
 ];

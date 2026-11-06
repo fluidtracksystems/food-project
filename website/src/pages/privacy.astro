@@ -26,7 +26,7 @@ const contact = CONTACT_EMAIL?.trim();
 
     <h2>The short version</h2>
     <p>
-      This site currently has no accounts and no advertising, and it does not set cookies. The calculators work in your browser:
+      This site currently has no accounts and no advertising. The calculators work in your browser:
       what you type into them is not sent to us and is not stored.
     </p>
 
@@ -39,6 +39,16 @@ const contact = CONTACT_EMAIL?.trim();
       <li>
         <strong>Server logs:</strong> like any website, the company that hosts this site's files may keep standard server
         logs, such as your IP address and the pages you asked for.
+      </li>
+      <li>
+        <strong>Contact messages:</strong> when you use the <a href="/contact/">contact form</a>, we receive your name,
+        email address and message by email through our hosting provider, HostGator. We use them to respond to your
+        question. The production contact service does not keep a separate copy of your message in its logs.
+      </li>
+      <li>
+        <strong>Spam protection:</strong> the contact service keeps temporary counters based on a keyed hash of your
+        IP address (or network prefix) to limit messages. The sending limits apply over an hour. The host's bot check
+        may also set a cookie so your message can reach the contact service. These measures help prevent automated abuse.
       </li>
       {
         endpoint && (
